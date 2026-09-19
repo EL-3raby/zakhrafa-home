@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 100" fill="none">
+  <!-- Stepped Geometric Square Emblem -->
+  <g transform="translate(0, 0)">
+    <!-- Base Stepped Square with traditional Islamic stepped crenellations -->
+    <path
+      d="M 8,0 H 92 V 8 H 100 V 92 H 92 V 100 H 8 V 92 H 0 V 8 H 8 Z"
+      fill="#E17F3F"
+    />
+    
+    <!-- Top Z Ribbon (Dynamic ribbon with 45-deg slash) -->
+    <path
+      d="M 22,20.5 H 78.5 L 51.5,47.5 H 42 L 66.5,24.5 H 26 Z"
+      fill="#0B3D42"
+    />
+    
+    <!-- Bottom Z Ribbon (Rotated 180-deg symmetric dynamic ribbon) -->
+    <path
+      d="M 78,79.5 H 21.5 L 48.5,52.5 H 58 L 33.5,75.5 H 74 Z"
+      fill="#0B3D42"
+    />
+
+    <!-- TM Symbol -->
+    <text
+      x="95"
+      y="9"
+      font-family="system-ui, -apple-system, sans-serif"
+      font-size="8"
+      font-weight="900"
+      fill="#E17F3F"
+    >TM</text>
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(122, 0)">
+    <!-- ZAKHRAFA -->
+    <text
+      x="0"
+      y="58"
+      font-family="system-ui, -apple-system, sans-serif"
+      font-size="44"
+      font-weight="900"
+      letter-spacing="0.14em"
+      fill="#0B3D42"
+    >ZAKHRAFA</text>
+    
+    <!-- INNOVATIVE DECORATIONS -->
+    <text
+      x="2"
+      y="84"
+      font-family="system-ui, -apple-system, sans-serif"
+      font-size="14"
+      font-weight="700"
+      letter-spacing="0.18em"
+      fill="#E17F3F"
+    >INNOVATIVE DECORATIONS</text>
+  </g>
+</svg>
