@@ -19,11 +19,11 @@ export const CtaBanner: React.FC = () => {
               <span>جاهزون لتنفيذ أرقى الأفكار لمنزلك</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-snug">
               هل لديك استفسار أو ترغب في تسعير تصميم محدد؟
             </h2>
 
-            <p className="text-slate-200 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+            <p className="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
               فريقنا متاح لمساعدتك في اختيار القطع المناسبة وتزويدك بالتفاصيل والأسعار مباشرة عبر
               واتساب أو الاتصال الهاتفي.
             </p>

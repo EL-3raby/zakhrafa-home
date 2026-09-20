@@ -170,22 +170,22 @@ export const BestOffersStrip: React.FC = () => {
     <section className="w-full py-8 sm:py-12 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Header Row: Title on right, "View All Offers" button & Arrows on left */}
-        <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
+        <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-3 sm:pb-4">
           {/* Section Title */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#E17F3F]/10 flex items-center justify-center text-[#E17F3F]">
-              <Tag className="w-5 h-5 stroke-[2]" />
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#E17F3F]/10 flex items-center justify-center text-[#E17F3F] shrink-0">
+              <Tag className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B3D42] tracking-tight">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0B3D42] tracking-tight">
                   أقوى العروض
                 </h2>
-                <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-bold">
+                <span className="px-2 sm:px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[10px] sm:text-[11px] font-bold">
                   عرض خاص
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+              <p className="text-xs sm:text-sm text-gray-500 mt-0.5 line-clamp-1">
                 تخفيضات استثنائية لفترة محدودة على تشكيلات مختارة
               </p>
             </div>

@@ -185,14 +185,18 @@ export const ShopTheLookSection: React.FC = () => {
     : null;
 
   return (
-    <section className="py-16 sm:py-24 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Section Header - Clean, Balanced & Centered */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0B3D42] tracking-tight">
+        <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDF5F6] text-[#0B3D42] text-xs font-semibold mb-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E17F3F]" />
+            <span>غرف ملهمة وتفاعلية</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0B3D42] tracking-tight">
             اكتشف مساحاتنا ومنتجاتنا
           </h2>
-          <p className="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="text-stone-600 text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
             انقر على أي نقطة تفاعلية لاستكشاف القطعة وتفاصيل تصميمها وأسعارها في سياقها الحقيقي داخل الغرفة.
           </p>
 

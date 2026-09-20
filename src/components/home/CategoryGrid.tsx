@@ -109,18 +109,18 @@ const cardVariants: Variants = {
 
 export const CategoryGrid: React.FC = () => {
   return (
-    <section id="categories" className="py-16 sm:py-24 bg-white relative">
+    <section id="categories" className="py-12 sm:py-16 lg:py-20 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDF5F6] text-[#0B3D42] text-xs font-semibold mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDF5F6] text-[#0B3D42] text-xs font-semibold mb-2.5 sm:mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E17F3F]" />
             <span>كتالوج زخرفة الشامل</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0B3D42] tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0B3D42] tracking-tight">
             تصفح أقسام الأثاث والديكور
           </h2>
-          <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
+          <p className="mt-2 sm:mt-3 text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed">
             اختر القسم المناسب لاستعراض الموديلات المتوفرة مع خيارات المقاسات والألوان المخصصة.
           </p>
         </div>

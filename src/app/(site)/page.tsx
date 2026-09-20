@@ -1,10 +1,10 @@
 import React from 'react';
 import { PromoHeroSlider } from '@/components/home/PromoHeroSlider';
 import { BestOffersStrip } from '@/components/home/BestOffersStrip';
+import { ShopByDepartments } from '@/components/home/ShopByDepartments';
 import { SearchBar } from '@/components/catalog/SearchBar';
 import { CategoryStoryStrip } from '@/components/catalog/CategoryStoryStrip';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
-import { ShopTheLookSection } from '@/components/home/ShopTheLookSection';
 import { CtaBanner } from '@/components/home/CtaBanner';
 
 export default function HomePage() {
@@ -24,11 +24,11 @@ export default function HomePage() {
       {/* 3. Best Offers Strip (أقوى العروض مع السحب التفاعلي والتحريك التلقائي) */}
       <BestOffersStrip />
 
-      {/* 4. Comprehensive Categories Grid (تصفح أقسام الأثاث والديكور) */}
-      <CategoryGrid />
+      {/* 4. Shop By Departments (تسوق الأقسام مع التبويبات وسلايدر المنتجات) */}
+      <ShopByDepartments />
 
-      {/* 5. Interactive 'Shop The Look' / اكتشف مساحاتنا ومنتجاتنا */}
-      <ShopTheLookSection />
+      {/* 5. Comprehensive Categories Grid (تصفح أقسام الأثاث والديكور) */}
+      <CategoryGrid />
 
       {/* 6. CTA Banner */}
       <CtaBanner />
