@@ -160,8 +160,8 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ initialProducts }) => 
     (filters.searchQuery?.trim() ? 1 : 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex flex-col lg:flex-row gap-8 items-start">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-10">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
         {/* Desktop & Mobile Filters */}
         <ProductFilters
           filters={filters}
@@ -173,63 +173,75 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ initialProducts }) => 
         />
 
         {/* Catalog Main Content */}
-        <main className="flex-1 w-full space-y-6">
+        <main className="flex-1 w-full space-y-4 sm:space-y-6">
           {/* Controls Bar: Results Count, Mobile Filter Button, Sort Dropdown */}
-          <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-xs">
-            <div className="flex items-center gap-3">
-              {/* Mobile Filter Trigger Button */}
-              <button
-                type="button"
-                onClick={() => setMobileFilterOpen(true)}
-                className="lg:hidden inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-[#0B3D42] px-3.5 py-2 rounded-xl text-xs font-semibold transition"
-              >
-                <SlidersHorizontal className="w-4 h-4 stroke-[1.75]" />
-                <span>الفلاتر</span>
-                {activeFiltersCount > 0 && (
-                  <span className="w-5 h-5 rounded-full bg-[#E17F3F] text-white text-[10px] font-bold flex items-center justify-center">
-                    {activeFiltersCount}
-                  </span>
-                )}
-              </button>
-
-              <p className="text-xs sm:text-sm text-gray-500 font-medium">
-                عرض <span className="font-bold text-[#0B3D42]">{totalItems > 0 ? `${startIndex + 1} - ${endIndex}` : 0}</span> من أصل <span className="font-bold text-[#0B3D42]">{totalItems}</span> تصميم
-              </p>
-            </div>
-
-            {/* Sort & Mobile View Switcher */}
-            <div className="flex items-center gap-2">
-              {/* Mobile View Toggle (Grid 2-col vs Single-col) */}
-              <div className="flex sm:hidden items-center p-1 rounded-xl bg-stone-100 border border-stone-200/80">
+          <div className="bg-white p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-xs">
+            {/* Main Action Bar */}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                {/* Mobile Filter Trigger Button */}
                 <button
                   type="button"
-                  onClick={() => setMobileLayout('grid')}
-                  aria-label="عرض شبكي كرتين"
-                  className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                    mobileLayout === 'grid'
-                      ? 'bg-white text-[#0B3D42] shadow-2xs'
-                      : 'text-stone-400 hover:text-stone-700'
-                  }`}
-                  title="عرض عمودين"
+                  onClick={() => setMobileFilterOpen(true)}
+                  className="lg:hidden inline-flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 text-[#0B3D42] px-3 py-2 rounded-xl text-xs font-bold transition active:scale-95 cursor-pointer"
                 >
-                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 stroke-[2]" />
+                  <span>الفلاتر</span>
+                  {activeFiltersCount > 0 && (
+                    <span className="w-4 h-4 rounded-full bg-[#E17F3F] text-white text-[10px] font-bold flex items-center justify-center">
+                      {activeFiltersCount}
+                    </span>
+                  )}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setMobileLayout('single')}
-                  aria-label="عرض بطاقة عريضة"
-                  className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                    mobileLayout === 'single'
-                      ? 'bg-white text-[#0B3D42] shadow-2xs'
-                      : 'text-stone-400 hover:text-stone-700'
-                  }`}
-                  title="عرض كرت عريض"
-                >
-                  <Square className="w-3.5 h-3.5" />
-                </button>
+
+                {/* Desktop item counter */}
+                <p className="hidden lg:block text-xs sm:text-sm text-gray-500 font-medium">
+                  عرض <span className="font-bold text-[#0B3D42]">{totalItems > 0 ? `${startIndex + 1} - ${endIndex}` : 0}</span> من أصل <span className="font-bold text-[#0B3D42]">{totalItems}</span> تصميم
+                </p>
               </div>
 
-              <SortDropdown value={sortBy} onChange={setSortBy} />
+              {/* View Switcher & Sort */}
+              <div className="flex items-center gap-2">
+                {/* Mobile View Toggle (Grid 2-col vs Single-col) */}
+                <div className="flex sm:hidden items-center p-0.5 rounded-lg bg-stone-100 border border-stone-200/70">
+                  <button
+                    type="button"
+                    onClick={() => setMobileLayout('grid')}
+                    aria-label="عرض عمودين"
+                    className={`p-1.5 rounded-md transition-all cursor-pointer ${
+                      mobileLayout === 'grid'
+                        ? 'bg-white text-[#0B3D42] shadow-2xs'
+                        : 'text-stone-400 hover:text-stone-700'
+                    }`}
+                    title="عرض عمودين"
+                  >
+                    <LayoutGrid className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMobileLayout('single')}
+                    aria-label="عرض كرت عريض"
+                    className={`p-1.5 rounded-md transition-all cursor-pointer ${
+                      mobileLayout === 'single'
+                        ? 'bg-white text-[#0B3D42] shadow-2xs'
+                        : 'text-stone-400 hover:text-stone-700'
+                    }`}
+                    title="عرض كرت عريض"
+                  >
+                    <Square className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <SortDropdown value={sortBy} onChange={setSortBy} />
+              </div>
+            </div>
+
+            {/* Mobile counter row - clean single line without wrapping */}
+            <div className="lg:hidden flex items-center justify-between text-[11px] text-gray-500 pt-2.5 mt-2.5 border-t border-gray-100 font-medium">
+              <span>التصاميم المعروضة:</span>
+              <span className="font-bold text-[#0B3D42]">
+                {totalItems > 0 ? `${startIndex + 1} - ${endIndex}` : 0} من {totalItems} تصميم
+              </span>
             </div>
           </div>
 

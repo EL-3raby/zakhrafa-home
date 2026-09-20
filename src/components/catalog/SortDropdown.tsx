@@ -95,7 +95,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({ value, onChange }) =
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer select-none ${
+        className={`inline-flex items-center gap-1.5 sm:gap-2.5 px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer select-none ${
           isOpen
             ? 'bg-white border-[#0B3D42] ring-3 ring-[#0B3D42]/10 shadow-sm text-[#0B3D42]'
             : 'bg-white hover:bg-stone-50/90 border-stone-200/90 text-stone-800 shadow-2xs hover:border-stone-300'
@@ -109,7 +109,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({ value, onChange }) =
 
         <span className="text-stone-400 font-normal text-xs hidden xs:inline">ترتيب:</span>
 
-        <span className="text-stone-800 font-bold whitespace-nowrap">
+        <span className="text-stone-800 font-bold whitespace-nowrap text-xs sm:text-sm">
           {currentItem.label}
         </span>
 
