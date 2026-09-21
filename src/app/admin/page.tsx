@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Package, FolderTree, PlusCircle, ArrowRight } from 'lucide-react';
+import { CloudinaryTestCard } from '@/components/admin/CloudinaryTestCard';
 
 export default function AdminDashboardPage() {
   return (
@@ -22,7 +23,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Quick stats placeholder */}
+      {/* Quick stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
@@ -49,12 +50,15 @@ export default function AdminDashboardPage() {
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-gray-500 text-sm font-medium">حالة التخزين السحابي</span>
-            <div className="w-3 h-3 rounded-full bg-emerald-500" />
+            <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
           </div>
           <p className="text-lg font-semibold text-gray-800 mt-3">Cloudinary & Supabase</p>
-          <p className="text-xs text-gray-500 mt-2">تم تجهيز الهيكل الأساسي للربط</p>
+          <p className="text-xs text-emerald-600 font-medium mt-2">تم تفعيل مفاتيح Cloudinary بنجاح</p>
         </div>
       </div>
+
+      {/* Cloudinary Live Upload Tester */}
+      <CloudinaryTestCard />
 
       <div className="bg-white p-8 rounded-xl border border-dashed border-gray-300 text-center py-12">
         <p className="text-gray-600 font-medium">
