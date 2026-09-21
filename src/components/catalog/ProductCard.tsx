@@ -1,17 +1,21 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingBag } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/common/BrandIcons';
 import { Product } from '@/types/product';
 import { CATEGORIES } from '@/data/mock-products';
 import { createWhatsAppProductMessage } from '@/lib/utils';
+import { useStore } from '@/components/common/StoreProvider';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { addToCart, toggleWishlist, isWishlisted } = useStore();
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
   const orderMessage = createWhatsAppProductMessage(product);
 
@@ -32,9 +36,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="group flex flex-col justify-between bg-white rounded-xl sm:rounded-2xl border border-gray-100/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-[#0B3D42]/20 transition-all duration-300">
       {/* Clickable Product Image Tile */}
+      <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-slate-100">
       <Link
         href={`/products/${product.slug}`}
-        className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-slate-100 block cursor-pointer"
+        className="block h-full w-full cursor-pointer"
       >
         {primaryImage ? (
           <Image
@@ -79,8 +84,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span>مميز</span>
             </span>
           )}
+
         </div>
       </Link>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              toggleWishlist(product);
+            }}
+            className={`absolute right-3 top-3 z-10 cursor-pointer pointer-events-auto rounded-full bg-white/95 p-2.5 shadow-md transition-transform hover:scale-105 ${isWishlisted(product.id) ? 'text-red-500' : 'text-stone-500'}`}
+            aria-label={isWishlisted(product.id) ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
+          >
+            <Heart className="h-4 w-4" fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
+          </button>
+      </div>
 
       {/* Card Details */}
       <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between">
@@ -162,6 +182,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           {/* Action CTAs */}
           <div className="flex items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => addToCart(product)}
+              className="inline-flex items-center justify-center rounded-lg bg-[#E17F3F]/10 p-2.5 text-[#0B3D42] hover:bg-[#E17F3F] hover:text-white sm:rounded-xl"
+              aria-label="إضافة إلى السلة"
+            >
+              <ShoppingBag className="h-4 w-4" />
+            </button>
             <a
               href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${orderMessage}`}
               target="_blank"

@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Phone, ChevronLeft } from 'lucide-react';
+import { Menu, X, ChevronLeft, Heart } from 'lucide-react';
 import { WhatsAppIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
+import { CATEGORIES } from '@/data/mock-products';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,117 +39,6 @@ export const Navbar: React.FC = () => {
   ];
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
-
-  // Mobile menu departments matching the user's reference design
-  const menuDepartments = [
-    {
-      title: 'الأثاث',
-      href: '/categories',
-      bgColor: 'bg-[#F7F4EE]',
-      hoverBg: 'hover:bg-[#EFEAE2]',
-      items: [
-        {
-          name: 'أثاث غرف النوم',
-          href: '/categories/bedrooms',
-          image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'أثاث غرفة سفرة',
-          href: '/categories/dining-rooms',
-          image: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'غرف المعيشة',
-          href: '/categories/living-rooms',
-          image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'كنب وزوايا مودرن',
-          href: '/categories/living-rooms',
-          image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'كراسي وفوتيه',
-          href: '/categories/living-rooms',
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=300&auto=format&fit=crop',
-        },
-      ],
-    },
-    {
-      title: 'الطاولات والكونسول',
-      href: '/categories/tables-consoles',
-      bgColor: 'bg-[#EDF2FA]',
-      hoverBg: 'hover:bg-[#DFE7F5]',
-      items: [
-        {
-          name: 'طاولات القهوة',
-          href: '/categories/tables-consoles',
-          image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'طاولات رخام',
-          href: '/categories/tables-consoles',
-          image: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'كونسول مداخل',
-          href: '/categories/tables-consoles',
-          image: 'https://images.unsplash.com/photo-1532323544230-7191fd51bc1b?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'طاولات جانبية',
-          href: '/categories/tables-consoles',
-          image: 'https://images.unsplash.com/photo-1519947486513-ce62b9a0b160?q=80&w=300&auto=format&fit=crop',
-        },
-      ],
-    },
-    {
-      title: 'الديكورات واللمسات المبتكرة',
-      href: '/categories/decor-accessories',
-      bgColor: 'bg-[#FFF6E5]',
-      hoverBg: 'hover:bg-[#FEEDD0]',
-      items: [
-        {
-          name: 'مرايا فخمة',
-          href: '/categories/decor-accessories',
-          image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'إضاءات وأباجورات',
-          href: '/categories/decor-accessories',
-          image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'إكسسوارات وتحف',
-          href: '/categories/decor-accessories',
-          image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=300&auto=format&fit=crop',
-        },
-      ],
-    },
-    {
-      title: 'تفصيل خاص وعروض حصرية',
-      href: '/categories?offers=true',
-      bgColor: 'bg-[#EAF4F0]',
-      hoverBg: 'hover:bg-[#DCEDE7]',
-      items: [
-        {
-          name: 'عروض حصرية',
-          href: '/categories?offers=true',
-          image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'تفصيل حسب الطلب',
-          href: '/categories/custom-projects',
-          image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=300&auto=format&fit=crop',
-        },
-        {
-          name: 'مشاريع متكاملة',
-          href: '/categories/custom-projects',
-          image: 'https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=80&w=300&auto=format&fit=crop',
-        },
-      ],
-    },
-  ];
 
   return (
     <>
@@ -184,13 +74,13 @@ export const Navbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-3">
-            <a
-              href={`tel:${whatsappNumber.replace(/[^0-9+]/g, '')}`}
-              className="flex items-center gap-2 text-xs font-semibold text-[#0B3D42] hover:text-[#E17F3F] transition-all px-3 py-2 rounded-lg hover:bg-gray-50 hover:scale-105 active:scale-95"
+            <Link
+              href="/wishlist"
+              className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#0B3D42] transition-all hover:bg-[#E17F3F]/10 hover:text-[#E17F3F]"
             >
-              <Phone className="w-4 h-4 text-[#E17F3F] stroke-[1.5]" />
-              <span>اتصل بنا</span>
-            </a>
+              <Heart className="h-4 w-4 text-[#E17F3F]" />
+              <span>المفضلة</span>
+            </Link>
 
             <a
               href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`}
@@ -260,60 +150,60 @@ export const Navbar: React.FC = () => {
 
           {/* Drawer Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 no-scrollbar">
-            {/* Header Title (matching reference image) */}
-            <div className="flex items-center justify-between pb-1 pt-1">
-              <h2 className="text-base sm:text-lg font-bold text-gray-900">
-                تسوق حسب الأقسام
-              </h2>
-              <Link
-                href="/categories"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-xs font-semibold text-[#0B3D42] hover:text-[#E17F3F] transition"
-              >
-                عرض الكل
+            <nav aria-label="التنقل السريع" className="space-y-1">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-stone-800 hover:bg-stone-50">
+                <span>
+                  <span className="block">الرئيسية</span>
+                  <span className="mt-0.5 block text-[11px] font-normal text-stone-500">اكتشف أحدث التشكيلات</span>
+                </span>
+                <ChevronLeft className="w-4 h-4 text-stone-400" />
               </Link>
-            </div>
+              <Link href="/categories" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-stone-800 hover:bg-stone-50">
+                <span>
+                  <span className="block">كل المنتجات</span>
+                  <span className="mt-0.5 block text-[11px] font-normal text-stone-500">تصفح الكتالوج الكامل</span>
+                </span>
+                <ChevronLeft className="w-4 h-4 text-stone-400" />
+              </Link>
+              <Link href="/categories?offers=true" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-[#0B3D42] bg-[#EAF4F0] hover:bg-[#DCEDE7]">
+                <span>
+                  <span className="block">أقوى العروض</span>
+                  <span className="mt-0.5 block text-[11px] font-normal text-[#0B3D42]/65">قطع مختارة بأسعار مخفضة</span>
+                </span>
+                <ChevronLeft className="w-4 h-4 text-[#E17F3F]" />
+              </Link>
+              <Link href="/#contact" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-stone-800 hover:bg-stone-50">
+                <span>
+                  <span className="block">الدعم</span>
+                  <span className="mt-0.5 block text-[11px] font-normal text-stone-500">تواصل معنا واستفسر</span>
+                </span>
+                <ChevronLeft className="w-4 h-4 text-stone-400" />
+              </Link>
+            </nav>
 
-            {/* Department Blocks with colored banners and horizontal thumbnail slider */}
-            {menuDepartments.map((dept) => (
-              <div key={dept.title} className="space-y-2">
-                {/* Colored Department Banner */}
-                <Link
-                  href={dept.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl ${dept.bgColor} ${dept.hoverBg} transition-colors group`}
-                >
-                  <ChevronLeft className="w-4 h-4 text-stone-500 group-hover:-translate-x-0.5 transition-transform" />
-                  <span className="font-bold text-sm text-stone-800">
-                    {dept.title}
-                  </span>
-                </Link>
-
-                {/* Horizontal Scroll of Categories with Square Photos */}
-                <div className="flex items-start gap-3 overflow-x-auto no-scrollbar py-1 px-0.5">
-                  {dept.items.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex flex-col items-center shrink-0 w-[66px] sm:w-[72px] group text-center cursor-pointer"
-                    >
-                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-2xs border border-stone-200/60 relative group-hover:scale-105 active:scale-95 transition-transform duration-200">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <span className="text-[11px] font-medium text-stone-700 mt-1 leading-tight line-clamp-2 group-hover:text-[#0B3D42]">
-                        {item.name}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
+            <div className="space-y-2 pt-2">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                <h2 className="text-base font-bold text-gray-900">تسوق حسب الأقسام</h2>
+                <span className="text-xs text-stone-400">{CATEGORIES.length} أقسام</span>
               </div>
-            ))}
+              <div className="grid grid-cols-2 gap-2">
+                {CATEGORIES.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/categories/${category.slug}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="group overflow-hidden rounded-xl border border-stone-200/80 bg-white hover:border-[#0B3D42]/30"
+                  >
+                    <div className="h-20 overflow-hidden bg-stone-100">
+                      <img src={category.image_url} alt={category.name_ar} className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105" loading="lazy" />
+                    </div>
+                    <span className="block px-2 py-2 text-right text-xs font-semibold leading-tight text-stone-700 group-hover:text-[#0B3D42]">
+                      {category.name_ar}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Drawer Footer Actions */}
@@ -328,13 +218,6 @@ export const Navbar: React.FC = () => {
               <span>طلب وتسعير فوري عبر واتساب</span>
             </a>
 
-            <a
-              href={`tel:${whatsappNumber.replace(/[^0-9+]/g, '')}`}
-              className="w-full flex items-center justify-center gap-2 border border-stone-200 bg-white text-stone-700 py-2 rounded-xl text-xs font-semibold hover:bg-stone-50 transition active:scale-98"
-            >
-              <Phone className="w-4 h-4 text-[#E17F3F] stroke-[1.75]" />
-              <span>اتصل بنا</span>
-            </a>
           </div>
         </aside>
       </div>

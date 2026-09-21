@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
-  Phone,
   Check,
   Share2,
   Plus,
@@ -12,6 +11,8 @@ import {
   MessageCircle,
   Copy,
   CheckCheck,
+  Heart,
+  ShoppingBag,
 } from 'lucide-react';
 import {
   WhatsAppIcon,
@@ -26,6 +27,7 @@ import {
 } from '@/components/common/BrandIcons';
 import { Product } from '@/types/product';
 import { Category } from '@/types/category';
+import { useStore } from '@/components/common/StoreProvider';
 
 interface ProductInfoProps {
   product: Product;
@@ -52,6 +54,7 @@ const COLOR_HEX_MAP: Record<string, string> = {
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) => {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
+  const { addToCart, toggleWishlist, isWishlisted } = useStore();
 
   // Available colors
   const availableColors =
@@ -151,6 +154,15 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
               <span>مشاركة</span>
             </>
           )}
+        </button>
+        <button
+          type="button"
+          onClick={() => toggleWishlist(product)}
+          className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition hover:scale-[1.02] ${isWishlisted(product.id) ? 'border-red-200 bg-red-50 text-red-500' : 'border-stone-200 bg-stone-50 text-stone-500 hover:border-[#E17F3F]/40 hover:bg-[#E17F3F]/10 hover:text-[#E17F3F]'}`}
+          title={isWishlisted(product.id) ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
+        >
+          <Heart className="h-3.5 w-3.5" fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
+          <span>{isWishlisted(product.id) ? 'في المفضلة' : 'إضافة للمفضلة'}</span>
         </button>
       </div>
 
@@ -350,25 +362,28 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
 
       {/* Main Conversion Buttons */}
       <div className="pt-4 space-y-3">
-        <a
-          href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${createCustomWhatsAppMessage()}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex items-center justify-center gap-3 bg-[#0B3D42] hover:bg-[#07262A] text-white py-4 px-6 rounded-2xl font-extrabold text-base sm:text-lg shadow-md hover:shadow-xl transition-all duration-200 group active:scale-98"
-        >
-          <WhatsAppIcon className="w-6 h-6 fill-white" />
-          <span>طلب واستفسار فوري عبر واتساب</span>
-        </a>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5">
           <a
-            href={`tel:${whatsappNumber.replace(/[^0-9+]/g, '')}`}
-            className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold text-stone-700 hover:text-[#0B3D42] bg-stone-50 hover:bg-stone-100 border border-stone-200 transition"
+            href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${createCustomWhatsAppMessage()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#0B3D42] px-3 py-3 text-center text-xs font-extrabold text-white shadow-md transition-all hover:bg-[#07262A] hover:shadow-xl active:scale-98 sm:text-sm"
           >
-            <Phone className="w-4 h-4 text-[#E17F3F] stroke-[1.75]" />
-            <span>اتصال هاتفي مباشر</span>
+            <WhatsAppIcon className="h-5 w-5 shrink-0 fill-white" />
+            <span>طلب واستفسار فوري عبر واتساب</span>
           </a>
 
+          <button
+            type="button"
+            onClick={() => addToCart(product, quantity)}
+            className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#E17F3F] px-3 py-3 text-xs font-extrabold text-white shadow-md transition-all hover:bg-[#C96A2D] hover:shadow-xl active:scale-98 sm:text-sm"
+          >
+            <ShoppingBag className="h-5 w-5 shrink-0" />
+            <span>إضافة للسلة</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2.5">
           <a
             href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
               `مرحباً زخرفة، أود طلب مقاسات أو أقمشة خاصة لمنتج: ${product.name_ar} (كود: ${product.id})`

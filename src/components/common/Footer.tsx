@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Phone, MapPin, ArrowUpLeft } from 'lucide-react';
+import { MapPin, ArrowUpLeft } from 'lucide-react';
 import { WhatsAppIcon, FacebookIcon, InstagramIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
 
@@ -143,13 +143,6 @@ export const Footer: React.FC = () => {
                 <span className="text-[11px] sm:text-xs font-medium">واتساب مباشر</span>
               </a>
 
-              <a
-                href={`tel:${whatsappNumber.replace(/[^0-9+]/g, '')}`}
-                className="flex items-center justify-center sm:justify-start gap-2 px-3 py-2.5 rounded-xl bg-white/[0.07] sm:bg-transparent border border-white/10 sm:border-0 text-slate-200 hover:text-[#E17F3F] hover:bg-white/10 transition active:scale-[0.98]"
-              >
-                <Phone className="w-4 h-4 text-[#E17F3F] stroke-[1.75] shrink-0" />
-                <span className="text-[11px] sm:text-xs font-medium">اتصل بنا</span>
-              </a>
             </div>
 
             {/* Shipping & Location Badge */}
