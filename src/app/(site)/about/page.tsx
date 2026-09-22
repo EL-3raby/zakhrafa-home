@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AboutHero } from '@/components/about/AboutHero';
-import { NotebookLookbook } from '@/components/about/NotebookLookbook';
+import { AtelierMorphingLookbook } from '@/components/about/AtelierMorphingLookbook';
 import { AboutMetricsSlide } from '@/components/about/AboutMetricsSlide';
 import { AboutPillarsSlide } from '@/components/about/AboutPillarsSlide';
 import { AboutCareSlide } from '@/components/about/AboutCareSlide';
@@ -12,18 +11,12 @@ export default function AboutPage() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201050150780';
 
   return (
-    <div className="bg-[#FAF8F5] text-[#0B3D42] selection:bg-[#E17F3F] selection:text-white" dir="rtl">
+    <div className="relative isolate bg-[#FAF8F5] text-[#0B3D42] selection:bg-[#E17F3F] selection:text-white" dir="rtl">
       {/* ========================================================================= */}
-      {/* CHAPTER 1: THE ATELIER MANIFESTO (مدخل الحكاية والمعمار الفاخر) */}
+      {/* CHAPTER 1 & 2: THE ATELIER MANIFESTO & CINEMATIC MORPHING LOOKBOOK */}
+      {/* الكارت يتحرك وينزل بسلاسة للمنتصف ويتحول إلى المفكرة السلكية التفاعلية مع تقليب الصفحات */}
       {/* ========================================================================= */}
-      <AboutHero whatsappNumber={whatsappNumber} />
-
-      {/* ========================================================================= */}
-      {/* CHAPTER 2: THE 3D WIRE SPIRAL NOTEPAD (المفكرة وهوية دار زخرفة التفاعلية) */}
-      {/* ========================================================================= */}
-      <section className="relative z-20 bg-gradient-to-b from-[#FAF8F5] via-[#F4EEE6] to-[#FAF8F5]">
-        <NotebookLookbook />
-      </section>
+      <AtelierMorphingLookbook whatsappNumber={whatsappNumber} />
 
       {/* ========================================================================= */}
       {/* CHAPTER 3: PRESTIGE METRICS & NUMBERS (أرقام تتحدث عن هيبة الصنعة) */}

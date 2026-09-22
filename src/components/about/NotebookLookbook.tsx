@@ -65,33 +65,30 @@ export const NotebookLookbook: React.FC = () => {
 
   // =========================================================================
   // PAGE 1 (01 / 03) Top-to-Bottom Spiral Notepad Flip (rotateX)
-  // Lifts the bottom edge up towards the viewer and swings over the top spiral
-  // =========================================================================
-  const page1RotateX = useTransform(scrollYProgress, [0.12, 0.44], [0, 115]);
-  const page1TranslateY = useTransform(scrollYProgress, [0.12, 0.44], [0, -25]);
-  const page1Opacity = useTransform(scrollYProgress, [0.12, 0.38, 0.44], [1, 0.9, 0]);
-  const page1Shadow = useTransform(scrollYProgress, [0.12, 0.44], [0, 0.55]);
+  const page1RotateX = useTransform(scrollYProgress, [0.08, 0.35], [0, 115]);
+  const page1TranslateY = useTransform(scrollYProgress, [0.08, 0.35], [0, -25]);
+  const page1Opacity = useTransform(scrollYProgress, [0.08, 0.30, 0.35], [1, 0.9, 0]);
+  const page1Shadow = useTransform(scrollYProgress, [0.08, 0.35], [0, 0.55]);
 
-  // =========================================================================
   // PAGE 2 (02 / 03) Top-to-Bottom Spiral Notepad Flip (rotateX)
-  // Flips up and over between 0.52 and 0.84
-  // =========================================================================
-  const page2RotateX = useTransform(scrollYProgress, [0.52, 0.84], [0, 115]);
-  const page2TranslateY = useTransform(scrollYProgress, [0.52, 0.84], [0, -25]);
-  const page2Opacity = useTransform(scrollYProgress, [0.52, 0.78, 0.84], [1, 0.9, 0]);
-  const page2Shadow = useTransform(scrollYProgress, [0.52, 0.84], [0, 0.55]);
+  const page2RotateX = useTransform(scrollYProgress, [0.42, 0.68], [0, 115]);
+  const page2TranslateY = useTransform(scrollYProgress, [0.42, 0.68], [0, -25]);
+  const page2Opacity = useTransform(scrollYProgress, [0.42, 0.62, 0.68], [1, 0.9, 0]);
+  const page2Shadow = useTransform(scrollYProgress, [0.42, 0.68], [0, 0.55]);
 
-  // Clean disappearance when scrolling past page 3
-  const stageOpacity = useTransform(scrollYProgress, [0.88, 0.98], [1, 0]);
-  const stageScale = useTransform(scrollYProgress, [0.88, 0.98], [1, 0.94]);
-  const stageY = useTransform(scrollYProgress, [0.88, 0.98], [0, -35]);
+  // Page 3 stays in full, clear, comfortable view from 0.68 to 0.86!
+  // ONLY after 0.86 (when user continues scrolling past Page 3):
+  // The notebook moves DOWN (+Y: 0 -> 90px) and sinks directly under the rising section!
+  const stageOpacity = useTransform(scrollYProgress, [0, 0.05, 0.86, 1.0], [0, 1, 1, 0.1]);
+  const stageScale = useTransform(scrollYProgress, [0, 0.05, 0.86, 1.0], [0.94, 1, 1, 0.92]);
+  const stageY = useTransform(scrollYProgress, [0, 0.05, 0.86, 1.0], [30, 0, 0, 90]);
 
   // Sync active page indicator with scroll position
   useEffect(() => {
     return scrollYProgress.on('change', (latest) => {
       if (latest < 0.35) {
         setActivePageIndex(0);
-      } else if (latest < 0.72) {
+      } else if (latest < 0.68) {
         setActivePageIndex(1);
       } else {
         setActivePageIndex(2);
@@ -107,8 +104,8 @@ export const NotebookLookbook: React.FC = () => {
     const scrollHeight = containerRef.current.scrollHeight - window.innerHeight;
 
     let targetRatio = 0.08;
-    if (index === 1) targetRatio = 0.50;
-    if (index === 2) targetRatio = 0.90;
+    if (index === 1) targetRatio = 0.40;
+    if (index === 2) targetRatio = 0.72;
 
     window.scrollTo({
       top: scrollTop + scrollHeight * targetRatio,
@@ -128,20 +125,22 @@ export const NotebookLookbook: React.FC = () => {
       {/* 
         Sticky Stage Container: 
         Pins the notebook firmly in the viewport while user scrolls to flip pages.
-        Once all 3 pages are flipped, page smoothly fades out and disappears!
+        Seamlessly stays visible until Section 3 rises up from below!
       */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center px-4 sm:px-6 overflow-hidden select-none z-20">
         
         {/* Zero-Lag Ambient Radial Gradient (No Blur) */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,127,63,0.1),transparent_65%)] pointer-events-none" />
 
-        {/* Chapter Marker */}
-        <div className="absolute top-6 right-6 sm:top-8 sm:right-10 flex items-center gap-2 text-stone-400 text-xs font-mono">
+        {/* Chapter Marker (Clear typography) */}
+        <div className="absolute top-6 right-6 sm:top-8 sm:right-10 flex items-center gap-2.5 text-stone-500 text-xs select-none">
           <span className="w-2 h-2 rounded-full bg-[#DE7635]" />
-          <span>02 / 06 • المفكرة وهوية الدار</span>
+          <span className="font-mono font-bold text-stone-600 text-[13px]">02 / 06</span>
+          <span className="text-stone-300">•</span>
+          <span className="font-sans font-semibold text-stone-700">المفكرة وهوية الدار</span>
         </div>
 
-        {/* Stage Wrapper with Clean Exit Fade */}
+        {/* Stage Wrapper with Clean Entrance & Exit Fade */}
         <motion.div
           style={{ opacity: stageOpacity, scale: stageScale, y: stageY }}
           className="w-full flex flex-col items-center justify-center will-change-[transform,opacity]"

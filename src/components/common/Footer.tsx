@@ -2,12 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { MapPin, ArrowUpLeft } from 'lucide-react';
 import { WhatsAppIcon, FacebookIcon, InstagramIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
 import { useCatalogCategories } from './useCatalogCategories';
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
+  const isAboutPage = pathname === '/about';
   const categories = useCatalogCategories();
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
   const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com';
@@ -21,7 +24,14 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer id="contact" className="bg-[#0B3D42] text-white pt-10 sm:pt-16 pb-24 sm:pb-8 border-t-2 border-[#E17F3F]">
+    <footer
+      id="contact"
+      className={`bg-[#0B3D42] text-white ${
+        isAboutPage
+          ? 'border-t-0 pt-6 sm:pt-10'
+          : 'border-t-2 border-[#E17F3F] pt-10 sm:pt-16'
+      } pb-24 sm:pb-8`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 pb-8 sm:pb-12 border-b border-[#12555C]">
           {/* Brand Column */}
