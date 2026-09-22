@@ -70,7 +70,7 @@ export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
         type="button"
         onClick={() => handleScroll('left')}
         aria-label="التمرير لليسار"
-        className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/95 backdrop-blur-xs shadow-md border border-gray-100 items-center justify-center text-gray-700 hover:text-[#0B3D42] hover:scale-105 transition active:scale-95"
+        className={`hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/95 backdrop-blur-xs shadow-md border border-gray-100 items-center justify-center text-gray-700 hover:text-[#0B3D42] hover:scale-105 transition active:scale-95 ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
         <ChevronLeft className="w-5 h-5 stroke-[2]" />
       </button>
@@ -80,7 +80,7 @@ export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
         type="button"
         onClick={() => handleScroll('right')}
         aria-label="التمرير لليمين"
-        className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/95 backdrop-blur-xs shadow-md border border-gray-100 items-center justify-center text-gray-700 hover:text-[#0B3D42] hover:scale-105 transition active:scale-95"
+        className={`hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/95 backdrop-blur-xs shadow-md border border-gray-100 items-center justify-center text-gray-700 hover:text-[#0B3D42] hover:scale-105 transition active:scale-95 ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
         <ChevronRight className="w-5 h-5 stroke-[2]" />
       </button>
@@ -90,7 +90,7 @@ export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
         ref={scrollContainerRef}
         onScroll={checkScroll}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        className="flex items-center gap-4 sm:gap-6 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden no-scrollbar px-4 sm:px-8 scroll-smooth"
+        className="flex flex-nowrap items-center gap-4 sm:gap-6 md:gap-10 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden no-scrollbar px-4 sm:px-8 scroll-smooth"
       >
         {CATEGORY_STRIP_ITEMS.map((item) => {
           const isActive = Boolean(
