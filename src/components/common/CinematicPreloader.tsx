@@ -6,10 +6,12 @@ import { usePathname } from 'next/navigation';
 
 export const CinematicPreloader: React.FC = () => {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
+  const isHome = pathname === '/' || pathname === '';
+  const [isVisible, setIsVisible] = useState(isHome);
+  const [loaderKind, setLoaderKind] = useState<'intro' | 'page'>(isHome ? 'intro' : 'page');
   const [progress, setProgress] = useState(0);
+  const [lastPathname, setLastPathname] = useState(pathname);
 
-  // Determine whether the intro should show (first homepage visit only)
   useEffect(() => {
     try {
       const urlParams = new URLSearchParams(window.location.search);
@@ -17,20 +19,30 @@ export const CinematicPreloader: React.FC = () => {
       const hasSeen = sessionStorage.getItem('zakhrafa_intro_completed');
       const shouldShowIntro = forceIntro || (!hasSeen && pathname === '/');
 
+      setLoaderKind(shouldShowIntro ? 'intro' : 'page');
       setIsVisible(shouldShowIntro);
     } catch {
+      setLoaderKind('page');
       setIsVisible(false);
     }
-    // Only run on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pathname]);
 
-  // Progress bar animation & auto-dismiss
+  useEffect(() => {
+    if (pathname !== lastPathname) {
+      setLastPathname(pathname);
+      if (loaderKind !== 'intro') {
+        setProgress(0);
+        setIsVisible(true);
+      }
+    }
+  }, [pathname, lastPathname, loaderKind]);
+
   useEffect(() => {
     if (!isVisible) return;
 
     document.body.style.overflow = 'hidden';
 
+    const duration = loaderKind === 'intro' ? 2400 : 1000;
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -43,23 +55,47 @@ export const CinematicPreloader: React.FC = () => {
     }, 30);
 
     const timer = setTimeout(() => {
-      try {
-        sessionStorage.setItem('zakhrafa_intro_completed', 'true');
-      } catch {
-        // Ignore sessionStorage errors.
+      if (loaderKind === 'intro') {
+        try {
+          sessionStorage.setItem('zakhrafa_intro_completed', 'true');
+        } catch {
+          // Ignore sessionStorage errors.
+        }
+
+
+
+
+
       }
       document.body.style.overflow = '';
       setIsVisible(false);
-    }, 2400);
+    }, duration);
 
     return () => {
       clearInterval(interval);
       clearTimeout(timer);
       document.body.style.overflow = '';
     };
-  }, [isVisible]);
+  }, [isVisible, loaderKind]);
 
-  const handleSkip = () => {
+  useEffect(() => {
+    if (loaderKind !== 'page') return;
+
+    if (document.readyState === 'complete') {
+      const timer = window.setTimeout(() => setIsVisible(false), 450);
+      return () => window.clearTimeout(timer);
+    }
+
+    const onLoad = () => {
+      window.setTimeout(() => setIsVisible(false), 350);
+    };
+
+    window.addEventListener('load', onLoad, { once: true });
+    return () => window.removeEventListener('load', onLoad);
+  }, [loaderKind, pathname]);
+
+
+  const handleComplete = () => {
     try {
       sessionStorage.setItem('zakhrafa_intro_completed', 'true');
     } catch {
@@ -68,6 +104,77 @@ export const CinematicPreloader: React.FC = () => {
     document.body.style.overflow = '';
     setIsVisible(false);
   };
+
+  if (loaderKind === 'page') {
+    return (
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            key="page-loader"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.25, ease: 'easeInOut' } }}
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#07262A]/30 backdrop-blur-md"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(225,127,63,0.18),_transparent_52%)]" />
+
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="relative z-10"
+            >
+              <svg
+                viewBox="0 0 800 800"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-20 w-20 text-[#F7F1EA] sm:h-24 sm:w-24"
+                style={{
+                  animation: 'loading-ui-swirling-spin 1.5s linear infinite',
+                  transformOrigin: 'center',
+                }}
+              >
+                <style>{`
+                  @keyframes loading-ui-swirling-spin {
+                    to {
+                      transform: rotate(360deg);
+                    }
+                  }
+                  @keyframes loading-ui-swirling-dash {
+                    0% {
+                      stroke-dasharray: 1, 800;
+                      stroke-dashoffset: 0;
+                    }
+                    50% {
+                      stroke-dasharray: 400, 400;
+                      stroke-dashoffset: -200px;
+                    }
+                    100% {
+                      stroke-dasharray: 800, 1;
+                      stroke-dashoffset: -800px;
+                    }
+                  }
+                  .loading-ui-swirling-circle {
+                    transform-origin: center;
+                    animation: loading-ui-swirling-dash 1.5s ease-in-out infinite alternate;
+                  }
+                `}</style>
+                <circle
+                  className="loading-ui-swirling-circle"
+                  cx="400"
+                  cy="400"
+                  r="200"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="50"
+                />
+              </svg>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  }
 
   return (
     <AnimatePresence>
@@ -94,7 +201,7 @@ export const CinematicPreloader: React.FC = () => {
 
           {/* Skip Button */}
           <button
-            onClick={handleSkip}
+            onClick={handleComplete}
             type="button"
             className="absolute top-6 left-6 z-50 text-xs font-semibold text-stone-300 hover:text-white px-3.5 py-1.5 rounded-full border border-white/20 hover:border-white/40 bg-white/10 hover:bg-white/15 backdrop-blur-sm transition-all duration-200 cursor-pointer"
           >
