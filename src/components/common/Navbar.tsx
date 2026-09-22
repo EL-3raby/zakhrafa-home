@@ -36,6 +36,7 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: 'الرئيسية', href: '/' },
+    { label: 'من نحن', href: '/#about' },
     { label: 'أقسام الكتالوج', href: '/categories' },
     { label: 'تواصل معنا', href: '/#contact' },
   ];
@@ -166,6 +167,13 @@ export const Navbar: React.FC = () => {
                 <span>
                   <span className="block">كل المنتجات</span>
                   <span className="mt-0.5 block text-[11px] font-normal text-stone-500">تصفح الكتالوج الكامل</span>
+                </span>
+                <ChevronLeft className="w-4 h-4 text-stone-400" />
+              </Link>
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-stone-800 hover:bg-stone-50">
+                <span>
+                  <span className="block">من نحن</span>
+                  <span className="mt-0.5 block text-[11px] font-normal text-stone-500">تعرف على قصتنا وقيمنا</span>
                 </span>
                 <ChevronLeft className="w-4 h-4 text-stone-400" />
               </Link>

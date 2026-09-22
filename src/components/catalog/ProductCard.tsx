@@ -183,7 +183,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <button
               type="button"
               onClick={() => addToCart(product)}
-              className="inline-flex items-center justify-center rounded-lg bg-[#E17F3F]/10 p-2.5 text-[#0B3D42] hover:bg-[#E17F3F] hover:text-white sm:rounded-xl"
+              className="inline-flex cursor-pointer items-center justify-center rounded-lg bg-[#E17F3F]/10 p-2.5 text-[#0B3D42] transition-all duration-200 hover:scale-[1.02] hover:bg-[#E17F3F] hover:text-white sm:rounded-xl"
               aria-label="إضافة إلى السلة"
             >
               <ShoppingBag className="h-4 w-4" />

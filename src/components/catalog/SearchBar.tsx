@@ -201,6 +201,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     )}
                   </div>
 
+                  
+
                   {/* Title & Info */}
                   <div className="flex-1 min-w-0">
                     <h4 className="text-xs sm:text-sm font-bold text-[#0B3D42] group-hover:text-[#E17F3F] transition-colors truncate">

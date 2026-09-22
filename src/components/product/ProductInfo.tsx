@@ -117,8 +117,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
   return (
     <div className="space-y-6">
       {/* Category Link, SKU & Share Button */}
-      <div className="flex items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
           {category ? (
             <Link
               href={`/categories/${category.slug}`}
@@ -131,39 +131,38 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
             <span className="text-stone-400">كتالوج زخرفة</span>
           )}
 
-          <span className="text-stone-400 font-mono text-[11px] px-2 py-0.5 rounded-md bg-stone-50 border border-stone-200">
-            كود: {product.id}
-          </span>
         </div>
 
-        {/* Share Button */}
-        <button
-          type="button"
-          onClick={handleCopyLink}
-          className="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#0B3D42] bg-stone-50 hover:bg-stone-100 px-3 py-1 rounded-full border border-stone-200 transition text-xs font-semibold"
-          title="مشاركة رابط القطعة"
-        >
-          {isCopied ? (
-            <>
-              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="text-emerald-700 font-bold">تم نسخ الرابط!</span>
-            </>
-          ) : (
-            <>
-              <Share2 className="w-3.5 h-3.5" />
-              <span>مشاركة</span>
-            </>
-          )}
-        </button>
-        <button
-          type="button"
-          onClick={() => toggleWishlist(product)}
-          className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition hover:scale-[1.02] ${isWishlisted(product.id) ? 'border-red-200 bg-red-50 text-red-500' : 'border-stone-200 bg-stone-50 text-stone-500 hover:border-[#E17F3F]/40 hover:bg-[#E17F3F]/10 hover:text-[#E17F3F]'}`}
-          title={isWishlisted(product.id) ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
-        >
-          <Heart className="h-3.5 w-3.5" fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
-          <span>{isWishlisted(product.id) ? 'في المفضلة' : 'إضافة للمفضلة'}</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Share Button */}
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#0B3D42] bg-stone-50 hover:bg-stone-100 px-3 py-1 rounded-full border border-stone-200 transition text-xs font-semibold"
+            title="مشاركة رابط القطعة"
+          >
+            {isCopied ? (
+              <>
+                <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-emerald-700 font-bold">تم نسخ الرابط!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>مشاركة</span>
+              </>
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => toggleWishlist(product)}
+            className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition hover:scale-[1.02] ${isWishlisted(product.id) ? 'border-red-200 bg-red-50 text-red-500' : 'border-stone-200 bg-stone-50 text-stone-500 hover:border-[#E17F3F]/40 hover:bg-[#E17F3F]/10 hover:text-[#E17F3F]'}`}
+            title={isWishlisted(product.id) ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
+          >
+            <Heart className="h-3.5 w-3.5" fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
+            <span>{isWishlisted(product.id) ? 'في المفضلة' : 'إضافة للمفضلة'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Title & Subtitle */}
@@ -423,30 +422,21 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
         </div>
       </div>
 
-      {/* Sticky Mobile Purchase Bar (Docked right above bottom nav on phones) */}
-      <div className="fixed bottom-[54px] inset-x-0 z-30 md:hidden bg-white/98 backdrop-blur-md border-t border-stone-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] px-4 py-2.5 flex items-center justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <span className="block text-[11px] text-stone-500 font-medium truncate">
-            {product.name_ar} {selectedColor ? `• ${selectedColor}` : ''}
-          </span>
-          {product.is_price_on_request ? (
-            <span className="text-xs font-bold text-[#E17F3F]">استفسار عن السعر</span>
-          ) : (
-            <span className="text-sm font-extrabold text-[#0B3D42]">
-              {formattedTotalPrice}{' '}
-              <span className="text-[10px] font-normal text-stone-500">ج.م</span>
-            </span>
-          )}
-        </div>
-
+      {/* Floating WhatsApp button: icon-only on mobile, CTA on desktop */}
+      <div className="fixed left-3 bottom-[86px] z-40 md:bottom-6 md:left-6">
         <a
           href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${createCustomWhatsAppMessage()}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 bg-[#0B3D42] hover:bg-[#07262A] text-white py-2.5 px-4 rounded-xl text-xs font-bold shadow-sm active:scale-95 transition-all shrink-0 cursor-pointer"
+          aria-label="تواصل عبر واتساب"
+          className="inline-flex items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_8px_18px_rgba(37,211,102,0.25)] transition-all hover:scale-105 active:scale-95 md:gap-2.5 md:py-3 md:px-4 md:shadow-lg md:hover:shadow-xl md:border md:border-[#12555C] md:bg-[#0B3D42] md:hover:bg-[#07262A]"
         >
-          <WhatsAppIcon className="w-4 h-4 fill-white" />
-          <span>طلب فوري</span>
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-full md:h-5 md:w-5 md:rounded-none md:bg-transparent">
+            <WhatsAppIcon className="h-5 w-5 fill-white md:h-5 md:w-5" />
+          </span>
+          <span className="hidden md:inline-block text-xs font-medium tracking-wide text-slate-100">
+            تواصل عبر واتساب
+          </span>
         </a>
       </div>
     </div>

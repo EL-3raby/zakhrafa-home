@@ -109,12 +109,12 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
             {stockStatus === 'in_stock' ? (
               <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-md text-[#0B3D42] text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-stone-200/60">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>متوفر تسليم فوري في مصر</span>
+                <span>متوفر</span>
               </span>
             ) : (
               <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-md text-[#E17F3F] text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-stone-200/60">
                 <span className="w-2 h-2 rounded-full bg-[#E17F3F]" />
-                <span>تنفيذ وتفصيل حسب المقاس</span>
+                <span>تنفيذ حسب الطلب</span>
               </span>
             )}
 
