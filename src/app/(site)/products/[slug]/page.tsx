@@ -8,18 +8,21 @@ import {
   getProductBySlug,
   getCategoryBySlug,
   getRelatedProducts,
-} from '@/data/mock-products';
+} from '@/lib/catalog';
 import { ProductGallery } from '@/components/product/ProductGallery';
 import { ProductInfo } from '@/components/product/ProductInfo';
 import { ProductTabs } from '@/components/product/ProductTabs';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
+
+export const revalidate = 60; // ISR: Revalidate every 60 seconds
+export const dynamicParams = true; // Allow newly published products to be generated on-demand
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  const products = getAllProducts();
+  const products = await getAllProducts();
   return products.map((product) => ({
     slug: product.slug,
   }));
@@ -27,7 +30,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -51,14 +54,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  const category = getCategoryBySlug(product.category_id);
-  const relatedProducts = getRelatedProducts(product.id, product.category_id, 3);
+  const category = await getCategoryBySlug(product.category_id);
+  const relatedProducts = await getRelatedProducts(product.id, product.category_id, 3);
 
   return (
     <div className="min-h-screen bg-white py-8 sm:py-12">
@@ -109,15 +112,15 @@ export default async function ProductDetailPage({ params }: Props) {
 
           {/* Info & Purchase CTAs (Left on RTL) */}
           <div className="lg:col-span-5">
-            <ProductInfo product={product} category={category} />
+            <ProductInfo product={product} category={category || undefined} />
           </div>
         </div>
 
         {/* Deep-Dive Specifications & Guidance Tabs */}
-        <ProductTabs product={product} category={category} />
+        <ProductTabs product={product} category={category || undefined} />
 
         {/* Related Products from the same category */}
-        <RelatedProducts products={relatedProducts} category={category} />
+        <RelatedProducts products={relatedProducts} category={category || undefined} />
       </div>
     </div>
   );

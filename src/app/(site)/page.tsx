@@ -8,14 +8,34 @@ import { SearchBar } from '@/components/catalog/SearchBar';
 import { CategoryStoryStrip } from '@/components/catalog/CategoryStoryStrip';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { CtaBanner } from '@/components/home/CtaBanner';
+import {
+  getAllCategories,
+  getAllProducts,
+  getDiscountedOffers,
+} from '@/lib/catalog';
 
-export default function HomePage() {
+export const revalidate = 60; // ISR: Revalidate homepage every 60 seconds
+
+export default async function HomePage() {
+  const [categories, products, discountedOffers] = await Promise.all([
+    getAllCategories(),
+    getAllProducts(),
+    getDiscountedOffers(8),
+  ]);
+
+  const categoryStripItems = categories.map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    title: c.name_ar,
+    image_url: c.image_url,
+  }));
+
   return (
     <>
       {/* 1. Visual Search & Category Quick Strip (At the very top) */}
       <section className="bg-white border-b border-gray-100 py-6 sm:py-7 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
-          <SearchBar />
+          <SearchBar products={products} />
           <div className="flex justify-end">
             <Link
               href="/categories"
@@ -25,7 +45,7 @@ export default function HomePage() {
               <span>كل الأقسام</span>
             </Link>
           </div>
-          <CategoryStoryStrip />
+          <CategoryStoryStrip categories={categoryStripItems} />
         </div>
       </section>
 
@@ -33,13 +53,13 @@ export default function HomePage() {
       <PromoHeroSlider />
 
       {/* 3. Best Offers Strip (أقوى العروض مع السحب التفاعلي والتحريك التلقائي) */}
-      <BestOffersStrip />
+      <BestOffersStrip offers={discountedOffers} />
 
       {/* 4. Shop By Departments (تسوق الأقسام مع التبويبات وسلايدر المنتجات) */}
-      <ShopByDepartments />
+      <ShopByDepartments categories={categories} products={products} />
 
       {/* 5. Comprehensive Categories Grid (تصفح أقسام الأثاث والديكور) */}
-      <CategoryGrid />
+      <CategoryGrid categories={categories} />
 
       {/* 6. CTA Banner */}
       <CtaBanner />

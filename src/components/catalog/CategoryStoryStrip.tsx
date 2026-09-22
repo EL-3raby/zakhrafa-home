@@ -23,12 +23,15 @@ export const CATEGORY_STRIP_ITEMS: CategoryStripItem[] = CATEGORIES.map((categor
 interface CategoryStoryStripProps {
   currentCategorySlug?: string;
   onSelectCategory?: (slug?: string) => void;
+  categories?: CategoryStripItem[];
 }
 
 export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
   currentCategorySlug,
   onSelectCategory,
+  categories,
 }) => {
+  const items = categories && categories.length > 0 ? categories : CATEGORY_STRIP_ITEMS;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -92,7 +95,7 @@ export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         className="flex flex-nowrap items-center gap-4 sm:gap-6 md:gap-10 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden no-scrollbar px-4 sm:px-8 scroll-smooth"
       >
-        {CATEGORY_STRIP_ITEMS.map((item) => {
+        {items.map((item) => {
           const isActive = Boolean(
             currentCategorySlug && item.slug && currentCategorySlug === item.slug
           );
