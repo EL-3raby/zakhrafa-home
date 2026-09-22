@@ -9,7 +9,6 @@ import { AboutFinaleSlide } from '@/components/about/AboutFinaleSlide';
 
 export default function AboutPage() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201050150780';
-
   return (
     <div className="relative isolate bg-[#FAF8F5] text-[#0B3D42] selection:bg-[#E17F3F] selection:text-white" dir="rtl">
       {/* ========================================================================= */}
