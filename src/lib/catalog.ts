@@ -102,7 +102,7 @@ export function mapCategoryRecordToCategory(record: CategoryRecord): Category {
   };
 }
 
-// 1. Fetch all categories strictly from Supabase
+// 1. Fetch all categories
 export async function getAllCategories(): Promise<Category[]> {
   try {
     const supabase = getPublicSupabase();
@@ -123,7 +123,7 @@ export async function getAllCategories(): Promise<Category[]> {
   return [];
 }
 
-// 2. Fetch category by slug strictly from Supabase
+// 2. Fetch category by slug
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   try {
     const supabase = getPublicSupabase();
@@ -145,7 +145,7 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
   return null;
 }
 
-// 3. Fetch all products strictly from Supabase
+// 3. Fetch all products
 export async function getAllProducts(): Promise<Product[]> {
   try {
     const supabase = getPublicSupabase();
@@ -166,7 +166,7 @@ export async function getAllProducts(): Promise<Product[]> {
   return [];
 }
 
-// 4. Fetch product by slug strictly from Supabase
+// 4. Fetch product by slug
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
     const supabase = getPublicSupabase();
@@ -188,7 +188,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return null;
 }
 
-// 5. Fetch products by category slug strictly from Supabase
+// 5. Fetch products by category slug
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
   try {
     const supabase = getPublicSupabase();
@@ -208,7 +208,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      if (data && data.length > 0) {
+      if (data) {
         return data.map(mapProductRecordToProduct);
       }
     }
@@ -219,7 +219,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
   return [];
 }
 
-// 6. Fetch related products strictly from Supabase
+// 6. Fetch related products
 export async function getRelatedProducts(
   currentProductId: string,
   categorySlugOrId: string,
@@ -256,7 +256,7 @@ export async function getRelatedProducts(
   return [];
 }
 
-// 7. Fetch discounted offers strictly from Supabase
+// 7. Fetch discounted offers
 export async function getDiscountedOffers(limit: number = 6): Promise<Product[]> {
   try {
     const supabase = getPublicSupabase();

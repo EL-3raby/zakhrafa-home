@@ -15,8 +15,8 @@ export const ShopByDepartments: React.FC<ShopByDepartmentsProps> = ({
   categories: passedCategories,
   products: passedProducts,
 }) => {
-  const allCategories = passedCategories || [];
-  const allProducts = passedProducts || [];
+  const allCategories = passedCategories && passedCategories.length > 0 ? passedCategories : [];
+  const allProducts = passedProducts && passedProducts.length > 0 ? passedProducts : [];
 
   const initialTab = allCategories[0]?.slug || 'living-rooms';
   const [activeTabSlug, setActiveTabSlug] = useState<string>(initialTab);

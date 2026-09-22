@@ -28,7 +28,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     ? new Intl.NumberFormat('ar-EG').format(product.discount_price)
     : null;
 
-  const category = product.category;
+  const category =
+    product.category || (product.category_id ? { slug: product.category_id, name_ar: '' } : undefined);
 
   return (
     <div className="group flex flex-col justify-between bg-white rounded-xl sm:rounded-2xl border border-gray-100/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-[#0B3D42]/20 transition-all duration-300">

@@ -18,39 +18,62 @@ function mapCategory(record: CategoryRecord): Category {
   };
 }
 
+let cachedCategories: Category[] = [];
+let isFetching = false;
+const listeners = new Set<(categories: Category[]) => void>();
+
+async function fetchCategories() {
+  if (isFetching) return;
+  isFetching = true;
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (!error && data) {
+      cachedCategories = data.map((record) => mapCategory(record as CategoryRecord));
+      listeners.forEach((listener) => listener(cachedCategories));
+    }
+  } catch (err) {
+    console.error('Error loading catalog categories:', err);
+  } finally {
+    isFetching = false;
+  }
+}
+
 export function useCatalogCategories() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(cachedCategories);
 
   useEffect(() => {
+    // 1. Register listener for state synchronization
+    listeners.add(setCategories);
+
+    // 2. Fetch if not already cached
+    if (cachedCategories.length === 0) {
+      fetchCategories();
+    } else {
+      setCategories(cachedCategories);
+    }
+
+    // 3. Unique channel ID to prevent collision with other hook instances (Navbar, Footer)
     const supabase = createClient();
-    let isMounted = true;
-
-    const loadCategories = async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('display_order', { ascending: true });
-
-      if (!error && data && isMounted) {
-        setCategories(data.map((record) => mapCategory(record as CategoryRecord)));
-      }
-    };
-
-    loadCategories();
-
+    const channelId = `categories-rt-${Math.random().toString(36).slice(2, 9)}`;
     const channel = supabase
-      .channel('public-categories-menu')
+      .channel(channelId)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'categories' },
         () => {
-          loadCategories();
+          fetchCategories();
         }
       )
       .subscribe();
 
     return () => {
-      isMounted = false;
+      listeners.delete(setCategories);
       supabase.removeChannel(channel);
     };
   }, []);

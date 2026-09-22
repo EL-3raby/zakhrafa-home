@@ -22,10 +22,14 @@ export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
   onSelectCategory,
   categories,
 }) => {
-  const items = categories || [];
+  const items = categories && categories.length > 0 ? categories : [];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  if (items.length === 0) {
+    return null;
+  }
 
   // Check scroll position to toggle arrows
   const checkScroll = () => {

@@ -1,11 +1,14 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { MapPin, ArrowUpLeft } from 'lucide-react';
 import { WhatsAppIcon, FacebookIcon, InstagramIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
-import { CATEGORIES } from '@/data/mock-products';
+import { useCatalogCategories } from './useCatalogCategories';
 
 export const Footer: React.FC = () => {
+  const categories = useCatalogCategories();
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
   const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com';
   const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com';
@@ -77,7 +80,7 @@ export const Footer: React.FC = () => {
                 أقسام الكتالوج
               </h3>
               <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-xs text-slate-300">
-                {CATEGORIES.map((cat) => (
+                {categories.map((cat) => (
                   <li key={cat.id}>
                     <Link
                       href={`/categories/${cat.slug}`}

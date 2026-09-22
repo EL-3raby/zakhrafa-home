@@ -56,7 +56,7 @@ interface CategoryGridProps {
 
 export const CategoryGrid: React.FC<CategoryGridProps> = ({ categories: passedCategories }) => {
   const categoriesList = React.useMemo(() => {
-    const raw = passedCategories || [];
+    const raw = passedCategories && passedCategories.length > 0 ? passedCategories : [];
     return raw.map((category) => ({
       ...category,
       icon: CATEGORY_ICONS[category.slug] || ArchitecturalSofaIcon,

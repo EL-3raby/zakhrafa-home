@@ -21,7 +21,10 @@ export const CategoryPills: React.FC<CategoryPillsProps> = ({
   currentCategorySlug,
   categories: passedCategories,
 }) => {
-  const categoryList = passedCategories || [];
+  const categoryList = passedCategories && passedCategories.length > 0 ? passedCategories : [];
+  if (categoryList.length === 0) {
+    return null;
+  }
   return (
     <div
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
