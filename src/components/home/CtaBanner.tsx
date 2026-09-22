@@ -1,5 +1,4 @@
 import React from 'react';
-import { Phone } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/common/BrandIcons';
 
 export const CtaBanner: React.FC = () => {
@@ -25,7 +24,7 @@ export const CtaBanner: React.FC = () => {
 
             <p className="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
               فريقنا متاح لمساعدتك في اختيار القطع المناسبة وتزويدك بالتفاصيل والأسعار مباشرة عبر
-              واتساب أو الاتصال الهاتفي.
+              واتساب.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
@@ -39,13 +38,6 @@ export const CtaBanner: React.FC = () => {
                 <span>محادثة واتساب فورية</span>
               </a>
 
-              <a
-                href={`tel:${whatsappNumber.replace(/[^0-9+]/g, '')}`}
-                className="inline-flex items-center gap-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/25 px-6 py-3.5 rounded-xl font-semibold text-sm sm:text-base hover:scale-105 active:scale-95 transition-all duration-200"
-              >
-                <Phone className="w-4 h-4 text-[#E17F3F] stroke-[1.5]" />
-                <span>اتصال مباشر</span>
-              </a>
             </div>
           </div>
         </div>

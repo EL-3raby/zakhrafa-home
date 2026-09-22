@@ -3,6 +3,7 @@ import { Navbar } from '@/components/common/Navbar';
 import { Footer } from '@/components/common/Footer';
 import { WhatsAppButton } from '@/components/common/WhatsAppButton';
 import { MobileBottomNav } from '@/components/common/MobileBottomNav';
+import { StoreProvider } from '@/components/common/StoreProvider';
 
 export default function SiteLayout({
   children,
@@ -11,11 +12,13 @@ export default function SiteLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <Navbar />
-      <main className="flex-1 pb-16 md:pb-0">{children}</main>
-      <Footer />
-      <WhatsAppButton />
-      <MobileBottomNav />
+      <StoreProvider>
+        <Navbar />
+        <main className="flex-1 pb-16 md:pb-0">{children}</main>
+        <Footer />
+        <WhatsAppButton />
+        <MobileBottomNav />
+      </StoreProvider>
     </div>
   );
 }

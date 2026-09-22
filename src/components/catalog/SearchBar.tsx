@@ -11,17 +11,33 @@ import { Product } from '@/types/product';
 interface SearchBarProps {
   value?: string;
   onChange?: (query: string) => void;
+  onDebouncedChange?: (query: string) => void;
   onSearch?: (query: string) => void;
   placeholder?: string;
+  debounceMs?: number;
+}
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setDebouncedValue(value), delay);
+    return () => window.clearTimeout(timeoutId);
+  }, [value, delay]);
+
+  return debouncedValue;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   value = '',
   onChange,
+  onDebouncedChange,
   onSearch,
   placeholder = 'ابحث عن منتج، خامة، أو قسم...',
+  debounceMs = 500,
 }) => {
   const [query, setQuery] = useState(value);
+  const debouncedQuery = useDebounce(query, debounceMs);
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState<Product[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,9 +47,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     setQuery(value);
   }, [value]);
 
-  // Live search filtering
+  // Run autocomplete and external search requests only after typing pauses.
   useEffect(() => {
-    const trimmed = query.trim().toLowerCase();
+    const trimmedQuery = debouncedQuery.trim();
+    onDebouncedChange?.(trimmedQuery);
+
+    const trimmed = trimmedQuery.toLowerCase();
     if (!trimmed) {
       setResults([]);
       setIsOpen(false);
@@ -55,7 +74,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
     setResults(matched.slice(0, 5));
     setIsOpen(true);
-  }, [query]);
+  }, [debouncedQuery, onDebouncedChange]);
 
   // Handle clicking outside to close dropdown
   useEffect(() => {
