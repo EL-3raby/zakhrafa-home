@@ -24,16 +24,18 @@ export interface CloudinaryUploadResult {
 export async function uploadBufferToCloudinary(
   buffer: Buffer,
   folder = 'zakhrafa/products',
-  tags: string[] = ['zakhrafa', 'product']
+  tags: string[] = ['zakhrafa', 'product'],
+  resourceType: 'image' | 'video' | 'auto' = 'image'
 ): Promise<CloudinaryUploadResult> {
   const isCategory = folder.includes('categories');
+  const isVideo = resourceType === 'video';
 
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const options: Record<string, any> = {
       folder,
-      tags: isCategory ? ['zakhrafa', 'category'] : tags,
-      resource_type: 'image',
+      tags: isCategory ? ['zakhrafa', 'category'] : isVideo ? ['zakhrafa', 'hero_video'] : tags,
+      resource_type: resourceType,
     };
 
     if (isCategory) {
@@ -124,12 +126,16 @@ export function getPublicIdFromCloudinaryUrl(url: string): string | null {
 /**
  * Delete an image from Cloudinary by its public_id or image URL
  */
-export async function deleteFromCloudinary(identifier: string): Promise<boolean> {
+export async function deleteFromCloudinary(
+  identifier: string,
+  resourceType?: 'image' | 'video'
+): Promise<boolean> {
   try {
     if (!identifier) return false;
 
     // If identifier is a full URL, extract the public_id
     let publicId = identifier;
+    const isVideoUrl = identifier.includes('/video/upload/');
     if (identifier.startsWith('http://') || identifier.startsWith('https://')) {
       const extracted = getPublicIdFromCloudinaryUrl(identifier);
       if (!extracted) {
@@ -139,7 +145,8 @@ export async function deleteFromCloudinary(identifier: string): Promise<boolean>
       publicId = extracted;
     }
 
-    const result = await cloudinary.uploader.destroy(publicId);
+    const type = resourceType || (isVideoUrl ? 'video' : 'image');
+    const result = await cloudinary.uploader.destroy(publicId, { resource_type: type });
     return result.result === 'ok' || result.result === 'not found';
   } catch (error) {
     console.error('Error deleting from Cloudinary:', error);

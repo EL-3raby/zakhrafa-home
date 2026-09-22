@@ -131,3 +131,28 @@ export const POPULAR_LUCIDE_ICONS = [
   'Sun',
   'Sliders',
 ] as const;
+
+export type HeroMediaType = 'image' | 'video';
+export type HeroBadgeType = 'hot' | 'new' | 'limited';
+
+export interface HeroSlideRecord {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  description?: string | null;
+  badge?: string | null;
+  badge_type?: HeroBadgeType | null;
+  media_type: HeroMediaType;
+  media_url: string;
+  video_poster_url?: string | null;
+  starting_price?: string | null;
+  original_price?: string | null;
+  discount_percentage?: string | null;
+  highlight_tag?: string | null;
+  cta_text?: string | null;
+  link: string;
+  display_order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
