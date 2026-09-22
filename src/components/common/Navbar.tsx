@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { Menu, X, ChevronLeft, Heart } from 'lucide-react';
 import { WhatsAppIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
-import { CATEGORIES } from '@/data/mock-products';
+import { useCatalogCategories } from './useCatalogCategories';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const categories = useCatalogCategories();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,10 +185,10 @@ export const Navbar: React.FC = () => {
             <div className="space-y-2 pt-2">
               <div className="flex items-center justify-between border-b border-gray-100 pb-2">
                 <h2 className="text-base font-bold text-gray-900">تسوق حسب الأقسام</h2>
-                <span className="text-xs text-stone-400">{CATEGORIES.length} أقسام</span>
+                <span className="text-xs text-stone-400">{categories.length} أقسام</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {CATEGORIES.map((category) => (
+                {categories.map((category) => (
                   <Link
                     key={category.id}
                     href={`/categories/${category.slug}`}
