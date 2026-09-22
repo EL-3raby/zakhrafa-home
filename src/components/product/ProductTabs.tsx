@@ -22,6 +22,7 @@ import {
   BespokeCustomIcon,
 } from '@/components/common/BrandIcons';
 import { Product } from '@/types/product';
+import { cn } from '@/lib/classHelpers';
 import { Category } from '@/types/category';
 
 interface ProductTabsProps {
@@ -67,13 +68,14 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2.5 px-4 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all shrink-0 cursor-pointer ${
-                isActive
-                  ? 'bg-[#0B3D42] text-white shadow-md'
-                  : 'bg-stone-50 text-stone-600 hover:bg-stone-100 hover:text-stone-900 border border-transparent'
-              }`}
-            >
-              <Icon className={`w-4 h-4 stroke-[2] ${isActive ? 'text-[#E17F3F]' : 'text-stone-400'}`} />
+              className={cn(
+  "flex items-center gap-2.5 px-4 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all shrink-0 cursor-pointer",
+  isActive
+    ? "bg-[#0B3D42] text-white shadow-md"
+    : "bg-stone-50 text-stone-600 hover:bg-stone-100 hover:text-stone-900 border border-transparent"
+)}
+>
+  <Icon className={cn("w-4 h-4 stroke-[2]", isActive ? "text-[#E17F3F]" : "text-stone-400")} />
               <span>{tab.label}</span>
             </button>
           );

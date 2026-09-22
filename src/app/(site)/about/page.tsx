@@ -12,7 +12,7 @@ export default function AboutPage() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201050150780';
 
   return (
-    <div className="bg-[#FAF8F5] text-[#0B3D42] selection:bg-[#E17F3F] selection:text-white" dir="rtl">
+    <div className="bg-[#FAF8F5] text-[#0B3D42] selection:bg-[#E17F3F] selection:text-white overflow-x-hidden" dir="rtl">
       {/* ========================================================================= */}
       {/* CHAPTER 1: THE ATELIER MANIFESTO (مدخل الحكاية والمعمار الفاخر) */}
       {/* ========================================================================= */}

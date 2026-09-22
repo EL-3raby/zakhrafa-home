@@ -51,7 +51,7 @@ export const AboutMetricsSlide: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full min-h-screen sm:h-[125vh] z-30"
+      className="relative w-full min-h-screen z-30"
     >
       <div className="relative sm:sticky sm:top-0 min-h-screen w-full flex flex-col justify-center items-center bg-[#07262A] text-white py-16 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-visible sm:overflow-hidden">
         {/* Zero-Lag Ambient Radial Glows (No CSS blur penalty) */}
@@ -85,7 +85,7 @@ export const AboutMetricsSlide: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-3xl xs:text-4xl sm:text-5xl font-black text-white tracking-tight leading-[1.35] sm:leading-[1.32]"
+            className="text-3xl sm:text-4xl sm:text-5xl font-black text-white tracking-tight leading-[1.35] sm:leading-[1.32]"
             style={{ fontFamily: 'var(--font-alexandria), sans-serif' }}
           >
             أرقام تعكس{' '}
@@ -106,7 +106,7 @@ export const AboutMetricsSlide: React.FC = () => {
         </div>
 
         {/* 4 Metric Cards Grid with generous breathing room */}
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 lg:gap-8">
           {METRICS_DATA.map((item, idx) => {
             const Icon = item.icon;
             return (
