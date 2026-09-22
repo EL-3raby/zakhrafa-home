@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronLeft, Heart } from 'lucide-react';
 import { WhatsAppIcon } from './BrandIcons';
+import CartButton from './CartButton';
 import { BrandLogo } from './BrandLogo';
 import { useCatalogCategories } from './useCatalogCategories';
 
@@ -82,6 +83,8 @@ export const Navbar: React.FC = () => {
               <Heart className="h-4 w-4 text-[#E17F3F]" />
               <span>المفضلة</span>
             </Link>
+
+            <CartButton />
 
             <a
               href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`}
