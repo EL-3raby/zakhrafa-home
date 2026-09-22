@@ -55,21 +55,37 @@ export async function POST(request: NextRequest) {
 
 /**
  * DELETE /api/upload
- * Accepts JSON body with { public_id: string }
+ * Accepts JSON body with:
+ * - { url: string } or { public_id: string }
+ * - OR { urls: string[] } for batch deletion
  */
 export async function DELETE(request: NextRequest) {
   try {
     const body = await request.json();
-    const { public_id } = body;
+    const { public_id, url, urls } = body;
 
-    if (!public_id) {
+    // Batch deletion
+    if (Array.isArray(urls) && urls.length > 0) {
+      const results = await Promise.all(
+        urls.map((u: string) => deleteFromCloudinary(u))
+      );
+      return NextResponse.json({
+        success: true,
+        deletedCount: results.filter(Boolean).length,
+        message: 'تم حذف الصور بنجاح',
+      });
+    }
+
+    const target = public_id || url;
+
+    if (!target) {
       return NextResponse.json(
-        { error: 'يجب تحديد public_id للصورة المراد حذفها' },
+        { error: 'يجب تحديد public_id أو url للصورة المراد حذفها' },
         { status: 400 }
       );
     }
 
-    const success = await deleteFromCloudinary(public_id);
+    const success = await deleteFromCloudinary(target);
 
     if (!success) {
       return NextResponse.json(
@@ -78,7 +94,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ success: true, message: 'تم حذف الصورة بنجاح' });
+    return NextResponse.json({ success: true, message: 'تم حذف الصورة من Cloudinary بنجاح' });
   } catch (error: unknown) {
     console.error('Cloudinary delete error:', error);
     return NextResponse.json(

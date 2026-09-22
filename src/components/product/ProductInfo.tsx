@@ -316,9 +316,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
               </div>
               <div>
                 <span className="text-stone-400 block text-[10px]">الأبعاد الدقيقة</span>
-                <span className="font-bold text-stone-800" dir="ltr">
-                  {product.dimensions.width} عرض × {product.dimensions.depth} عمق ×{' '}
-                  {product.dimensions.height} ارتفاع سم
+                <span className="font-bold text-stone-800" dir="rtl">
+                  {typeof product.dimensions === 'object' && product.dimensions?.width
+                    ? `${product.dimensions.width} عرض × ${product.dimensions.depth} عمق × ${product.dimensions.height} ارتفاع سم`
+                    : (product.dimensions as unknown as string)}
                 </span>
               </div>
             </div>
@@ -331,7 +332,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, category }) =
             </div>
             <div>
               <span className="text-stone-400 block text-[10px]">الضمان المعتمد</span>
-              <span className="font-bold text-stone-800">ضمان 5 سنوات على الهيكل والتصنيع</span>
+              <span className="font-bold text-stone-800">
+                {product.warranty_years
+                  ? `ضمان ${product.warranty_years} سنوات على الهيكل والتصنيع`
+                  : 'ضمان 5 سنوات على الهيكل والتصنيع'}
+              </span>
             </div>
           </div>
 

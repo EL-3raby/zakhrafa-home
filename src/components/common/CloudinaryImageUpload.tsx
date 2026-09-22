@@ -71,7 +71,8 @@ export const CloudinaryImageUpload: React.FC<CloudinaryImageUploadProps> = ({
     }
   };
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
+    const urlToDelete = previewUrl;
     setPreviewUrl(null);
     setIsSuccess(false);
     setErrorMessage(null);
@@ -79,6 +80,18 @@ export const CloudinaryImageUpload: React.FC<CloudinaryImageUploadProps> = ({
       fileInputRef.current.value = '';
     }
     if (onRemove) onRemove();
+
+    if (urlToDelete && urlToDelete.includes('cloudinary.com')) {
+      try {
+        await fetch('/api/upload', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: urlToDelete }),
+        });
+      } catch (err) {
+        console.error('Failed to delete image from Cloudinary:', err);
+      }
+    }
   };
 
   return (
@@ -123,18 +136,17 @@ export const CloudinaryImageUpload: React.FC<CloudinaryImageUploadProps> = ({
           {isSuccess && (
             <div className="absolute bottom-2 right-2 bg-emerald-600/90 text-white text-[11px] font-medium px-2.5 py-1 rounded-md flex items-center gap-1 backdrop-blur-xs">
               <CheckCircle2 className="w-3 h-3" />
-              <span>تم الرفع إلى Cloudinary</span>
+              <span>تم الرفع</span>
             </div>
           )}
         </div>
       ) : (
         <div
           onClick={() => !isUploading && fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center min-h-[180px] ${
-            isUploading
+          className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center min-h-[180px] ${isUploading
               ? 'border-stone-300 bg-stone-50 cursor-wait'
               : 'border-stone-300 hover:border-[#E17F3F] hover:bg-[#E17F3F]/5'
-          }`}
+            }`}
         >
           {isUploading ? (
             <div className="flex flex-col items-center gap-3">

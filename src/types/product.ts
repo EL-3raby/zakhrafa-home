@@ -41,6 +41,17 @@ export interface Product {
   images: ProductImage[];
   meta_title?: string;
   meta_description?: string;
+  // Detailed Specs & Materials
+  wood_type?: string;
+  fabric_type?: string;
+  foam_density?: string;
+  legs_type?: string;
+  hardware_type?: string;
+  warranty_years?: number;
+  origin_country?: string;
+  // Space Guide
+  custom_dimensions_available?: boolean;
+  space_guide_notes?: string;
   created_at?: string;
   updated_at?: string;
 }

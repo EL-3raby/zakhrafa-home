@@ -101,7 +101,9 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
                 <div className="w-12 h-12 rounded-2xl bg-[#0B3D42]/10 text-[#0B3D42] flex items-center justify-center">
                   <SolidWoodIcon className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-stone-900 text-base">هيكل خشب زان أحمر طبيعي</h4>
+                <h4 className="font-bold text-stone-900 text-base">
+                  {product.wood_type || 'هيكل خشب زان أحمر طبيعي'}
+                </h4>
                 <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
                   هيكل داخلي متين مجفف حرارياً ومقاوم للتسوس والتقوس، يضمن متانة فائقة واستقراراً هيكلياً يدوم لسنوات.
                 </p>
@@ -112,7 +114,9 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
                 <div className="w-12 h-12 rounded-2xl bg-[#E17F3F]/10 text-[#E17F3F] flex items-center justify-center">
                   <FabricWeaveIcon className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-stone-900 text-base">أقمشة فاخرة معالجة</h4>
+                <h4 className="font-bold text-stone-900 text-base">
+                  {product.fabric_type || 'أقمشة فاخرة معالجة'}
+                </h4>
                 <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
                   مخمل إيطالي ناعم، كتان تركي أو بوكليه عالي الكثافة معالج ضد البقع وسهل التنظيف مع ملمس فائق الراحة.
                 </p>
@@ -123,7 +127,9 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
                 <div className="w-12 h-12 rounded-2xl bg-[#0B3D42]/10 text-[#0B3D42] flex items-center justify-center">
                   <CertifiedShieldIcon className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-stone-900 text-base">إسفنج سوفت عالي المرونة (كثافة 36)</h4>
+                <h4 className="font-bold text-stone-900 text-base">
+                  {product.foam_density || 'إسفنج سوفت عالي المرونة (كثافة 36)'}
+                </h4>
                 <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
                   حشوات طبية مريحة لا تهبط بمرور الوقت، تمنح دعماً مثالياً لفقرات الظهر وتجربة جلوس استرخائية لا تضاهى.
                 </p>
@@ -156,11 +162,13 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
                   </tr>
                   <tr className="border-b border-stone-100 bg-stone-50/70">
                     <td className="py-3.5 px-5 font-bold text-stone-700">بلد المنشأ والتصنيع</td>
-                    <td className="py-3.5 px-5 text-stone-900">جمهورية مصر العربية (مصانع وورش زخرفة)</td>
+                    <td className="py-3.5 px-5 text-stone-900">{product.origin_country || 'جمهورية مصر العربية (مصانع وورش زخرفة)'}</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-5 font-bold text-stone-700">مدة الضمان</td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-700">5 سنوات ضمان شامل على الهيكل والتصنيع</td>
+                    <td className="py-3.5 px-5 font-bold text-emerald-700">
+                      {product.warranty_years ? `${product.warranty_years} سنوات ضمان شامل على الهيكل والتصنيع` : '5 سنوات ضمان شامل على الهيكل والتصنيع'}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -176,7 +184,7 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
                 المقاسات الدقيقة وتنسيق المساحة
               </h3>
               <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
-                تأكد من ملاءمة القطعة لمساحتك ومداخل الأبواب. نتيح إمكانية تفصيل وتعديل أي بعد بالميليمتر ليناسب مساحة غرفتك بالكامل.
+                {product.space_guide_notes || 'تأكد من ملاءمة القطعة لمساحتك ومداخل الأبواب. نتيح إمكانية تفصيل وتعديل أي بعد بالميليمتر ليناسب مساحة غرفتك بالكامل.'}
               </p>
             </div>
 
@@ -208,7 +216,9 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, category }) =
 
               <div className="p-4 sm:p-5 rounded-2xl bg-[#0B3D42] text-white border border-[#0B3D42] text-center flex flex-col justify-center">
                 <span className="block text-slate-300 text-[11px] font-semibold mb-1">تعديل المقاسات</span>
-                <span className="text-base sm:text-lg font-black text-[#E17F3F]">متاح حسب الطلب</span>
+                <span className="text-base sm:text-lg font-black text-[#E17F3F]">
+                  {product.custom_dimensions_available !== false ? 'متاح حسب الطلب' : 'مقاس قياسي'}
+                </span>
                 <span className="text-[10px] text-slate-300 block mt-0.5">تواصل مع المهندس</span>
               </div>
             </div>
