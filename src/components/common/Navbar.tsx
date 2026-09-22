@@ -36,7 +36,7 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: 'الرئيسية', href: '/' },
-    { label: 'من نحن', href: '/#about' },
+    { label: 'من نحن', href: '/about' },
     { label: 'أقسام الكتالوج', href: '/categories' },
     { label: 'تواصل معنا', href: '/#contact' },
   ];

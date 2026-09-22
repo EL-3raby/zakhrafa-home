@@ -77,12 +77,55 @@
   }
 }
 
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes soft-glow {
+  0%, 100% {
+    box-shadow: 18px 18px 0 #E17F3F;
+  }
+  50% {
+    box-shadow: 18px 24px 0 #E17F3F;
+  }
+}
+
 .animate-float {
   animation: float-subtle 4s ease-in-out infinite;
 }
 
 .animate-pulse-subtle {
   animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+.animate-reveal-up {
+  animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-reveal-right {
+  animation: reveal-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-soft-glow {
+  animation: soft-glow 4s ease-in-out infinite;
 }
 
 .card-luxury-hover {
