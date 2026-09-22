@@ -95,7 +95,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               event.stopPropagation();
               toggleWishlist(product);
             }}
-            className={`absolute right-3 top-3 z-10 cursor-pointer pointer-events-auto rounded-full bg-white/95 p-2.5 shadow-md transition-transform hover:scale-105 ${isWishlisted(product.id) ? 'text-red-500' : 'text-stone-500'}`}
+            className={`absolute left-3 top-3 z-10 cursor-pointer pointer-events-auto rounded-full bg-white/95 p-2.5 shadow-md transition-transform hover:scale-105 ${isWishlisted(product.id) ? 'text-red-500' : 'text-stone-500'}`}
             aria-label={isWishlisted(product.id) ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
           >
             <Heart className="h-4 w-4" fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
