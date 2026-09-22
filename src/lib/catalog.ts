@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { ProductRecord, CategoryRecord } from '@/types/database';
+import { ProductRecord, CategoryRecord, HeroSlideRecord } from '@/types/database';
 import { Product } from '@/types/product';
 import { Category } from '@/types/category';
 
@@ -277,4 +277,22 @@ export async function getDiscountedOffers(limit: number = 6): Promise<Product[]>
   }
 
   return [];
+}
+
+// 8. Fetch active hero slides for homepage banner
+export async function getActiveHeroSlides(): Promise<HeroSlideRecord[]> {
+  try {
+    const supabase = getPublicSupabase();
+    const { data, error } = await supabase
+      .from('hero_slides')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true });
+
+    if (error || !data) return [];
+    return data as HeroSlideRecord[];
+  } catch (err) {
+    console.error('Error fetching active hero slides:', err);
+    return [];
+  }
 }

@@ -9,71 +9,12 @@ import { WhatsAppIcon } from '@/components/common/BrandIcons';
 import { createClient } from '@/lib/supabase/client';
 import { HeroSlideRecord } from '@/types/database';
 
-const DEFAULT_PROMO_SLIDES: HeroSlideRecord[] = [
-  {
-    id: 'slide-living',
-    badge: 'مهرجان عروض الموسم • خصومات حصرية',
-    badge_type: 'hot',
-    title: 'أطقم صالونات ومعيشة فاخرة',
-    subtitle: 'أناقة تدوم في كل تفصيلة',
-    description:
-      'أطقم كنب زاوية ومودرن مصنوعة من خشب الزان الطبيعي وأقمشة إيطالية مقاومة للبقع والاهتراء مع ضمان 5 سنوات.',
-    starting_price: '11,990',
-    original_price: '16,500',
-    discount_percentage: 'خصم 30%',
-    link: '/categories/living-rooms',
-    cta_text: 'استكشف عروض الصالونات',
-    media_type: 'image',
-    media_url:
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1600&auto=format&fit=crop',
-    highlight_tag: 'أطقم معيشة تبدأ من',
-    display_order: 0,
-    is_active: true,
-  },
-  {
-    id: 'slide-bedroom',
-    badge: 'مهرجان الصيف والتجديد • تشكيلة ملكية',
-    badge_type: 'limited',
-    title: 'غرف نوم رئيسية متكاملة',
-    subtitle: 'راحة فندقية وتصميم استثنائي',
-    description:
-      'سرير فندقي كينج مع خزانة ملابس دريسنج روم وتسريحة بتشطيبات أخشاب ورخام طبيعي لتجربة نوم لا تضاهى.',
-    starting_price: '18,490',
-    original_price: '24,000',
-    discount_percentage: 'خصم 25%',
-    link: '/categories/bedrooms',
-    cta_text: 'استكشف غرف النوم',
-    media_type: 'image',
-    media_url:
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1600&auto=format&fit=crop',
-    highlight_tag: 'غرف نوم تبدأ من',
-    display_order: 1,
-    is_active: true,
-  },
-  {
-    id: 'slide-dining',
-    badge: 'أناقة الضيافة • تسليم فوري وتفصيل',
-    badge_type: 'new',
-    title: 'طاولات سفرة رخام طبيعي',
-    subtitle: 'فخامة الاستقبال وكرم الضيافة',
-    description:
-      'طاولات طعام مع 6 و 8 كراسي مبطنة ومريحة، قواعد ستانلس ستيل معالجة ضد الخدوش ولمسات خشبية راقية.',
-    starting_price: '8,750',
-    original_price: '12,200',
-    discount_percentage: 'وفر 3,450 ج.م',
-    link: '/categories/dining-rooms',
-    cta_text: 'استكشف طاولات السفرة',
-    media_type: 'image',
-    media_url:
-      'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=1600&auto=format&fit=crop',
-    highlight_tag: 'طاولات سفرة تبدأ من',
-    display_order: 2,
-    is_active: true,
-  },
-];
+interface PromoHeroSliderProps {
+  initialSlides?: HeroSlideRecord[];
+}
 
-export const PromoHeroSlider: React.FC = () => {
-  const [slides, setSlides] = useState<HeroSlideRecord[]>(DEFAULT_PROMO_SLIDES);
+export const PromoHeroSlider: React.FC<PromoHeroSliderProps> = ({ initialSlides = [] }) => {
+  const [slides, setSlides] = useState<HeroSlideRecord[]>(initialSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -93,15 +34,17 @@ export const PromoHeroSlider: React.FC = () => {
           .order('display_order', { ascending: true });
 
         if (error) {
-          // If table not yet migrated, stick with defaults smoothly
+          console.error('Error loading hero slides:', error);
+          if (isMounted) setSlides([]);
           return;
         }
 
-        if (data && data.length > 0 && isMounted) {
-          setSlides(data as HeroSlideRecord[]);
+        if (isMounted) {
+          setSlides((data as HeroSlideRecord[]) || []);
         }
-      } catch {
-        // Fallback to default slides
+      } catch (err) {
+        console.error('Failed to load hero slides:', err);
+        if (isMounted) setSlides([]);
       }
     }
 
@@ -132,26 +75,28 @@ export const PromoHeroSlider: React.FC = () => {
     }
   }, []);
 
-  const totalSlides = slides.length || 1;
+  const totalSlides = slides.length;
 
   const nextSlide = useCallback(() => {
+    if (totalSlides === 0) return;
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
   }, [totalSlides]);
 
   const prevSlide = useCallback(() => {
+    if (totalSlides === 0) return;
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
   // Adjust currentSlide index if slides array changes
   useEffect(() => {
-    if (currentSlide >= totalSlides) {
+    if (totalSlides > 0 && currentSlide >= totalSlides) {
       setCurrentSlide(0);
     }
   }, [currentSlide, totalSlides]);
 
   // Auto play (longer interval for videos)
   useEffect(() => {
-    if (!isAutoPlay) return;
+    if (!isAutoPlay || totalSlides <= 1) return;
     const currentMediaIsVideo = slides[currentSlide]?.media_type === 'video';
     const intervalMs = currentMediaIsVideo ? 9000 : 6000;
 
@@ -162,9 +107,14 @@ export const PromoHeroSlider: React.FC = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isAutoPlay, nextSlide, currentSlide, slides]);
+  }, [isAutoPlay, nextSlide, currentSlide, slides, totalSlides]);
 
-  const slide = slides[currentSlide] || DEFAULT_PROMO_SLIDES[0];
+  if (slides.length === 0) {
+    return null;
+  }
+
+  const slide = slides[currentSlide] || slides[0];
+  if (!slide) return null;
 
   return (
     <section

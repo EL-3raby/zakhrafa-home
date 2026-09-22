@@ -12,15 +12,17 @@ import {
   getAllCategories,
   getAllProducts,
   getDiscountedOffers,
+  getActiveHeroSlides,
 } from '@/lib/catalog';
 
 export const revalidate = 60; // ISR: Revalidate homepage every 60 seconds
 
 export default async function HomePage() {
-  const [categories, products, discountedOffers] = await Promise.all([
+  const [categories, products, discountedOffers, heroSlides] = await Promise.all([
     getAllCategories(),
     getAllProducts(),
     getDiscountedOffers(8),
+    getActiveHeroSlides(),
   ]);
 
   const categoryStripItems = categories.map((c) => ({
@@ -50,7 +52,7 @@ export default async function HomePage() {
       </section>
 
       {/* 2. Promotional Offers Banner Slider */}
-      <PromoHeroSlider />
+      <PromoHeroSlider initialSlides={heroSlides} />
 
       {/* 3. Best Offers Strip (أقوى العروض مع السحب التفاعلي والتحريك التلقائي) */}
       <BestOffersStrip offers={discountedOffers} />

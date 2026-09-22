@@ -27,73 +27,9 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
-const FALLBACK_DEFAULT_SLIDES: HeroSlideRecord[] = [
-  {
-    id: 'default-1',
-    title: 'أطقم صالونات ومعيشة فاخرة',
-    subtitle: 'أناقة تدوم في كل تفصيلة',
-    description:
-      'أطقم كنب زاوية ومودرن مصنوعة من خشب الزان الطبيعي وأقمشة إيطالية مقاومة للبقع والاهتراء مع ضمان 5 سنوات.',
-    badge: 'مهرجان عروض الموسم • خصومات حصرية',
-    badge_type: 'hot',
-    media_type: 'image',
-    media_url:
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1600&auto=format&fit=crop',
-    starting_price: '11,990',
-    original_price: '16,500',
-    discount_percentage: 'خصم 30%',
-    highlight_tag: 'أطقم معيشة تبدأ من',
-    cta_text: 'استكشف عروض الصالونات',
-    link: '/categories/living-rooms',
-    display_order: 0,
-    is_active: true,
-  },
-  {
-    id: 'default-2',
-    title: 'غرف نوم رئيسية متكاملة',
-    subtitle: 'راحة فندقية وتصميم استثنائي',
-    description:
-      'سرير فندقي كينج مع خزانة ملابس دريسنج روم وتسريحة بتشطيبات أخشاب ورخام طبيعي لتجربة نوم لا تضاهى.',
-    badge: 'مهرجان الصيف والتجديد • تشكيلة ملكية',
-    badge_type: 'limited',
-    media_type: 'image',
-    media_url:
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1600&auto=format&fit=crop',
-    starting_price: '18,490',
-    original_price: '24,000',
-    discount_percentage: 'خصم 25%',
-    highlight_tag: 'غرف نوم تبدأ من',
-    cta_text: 'استكشف غرف النوم',
-    link: '/categories/bedrooms',
-    display_order: 1,
-    is_active: true,
-  },
-  {
-    id: 'default-3',
-    title: 'طاولات سفرة رخام طبيعي',
-    subtitle: 'فخامة الاستقبال وكرم الضيافة',
-    description:
-      'طاولات طعام مع 6 و 8 كراسي مبطنة ومريحة، قواعد ستانلس ستيل معالجة ضد الخدوش ولمسات خشبية راقية.',
-    badge: 'أناقة الضيافة • تسليم فوري وتفصيل',
-    badge_type: 'new',
-    media_type: 'image',
-    media_url:
-      'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=1600&auto=format&fit=crop',
-    starting_price: '8,750',
-    original_price: '12,200',
-    discount_percentage: 'وفر 3,450 ج.م',
-    highlight_tag: 'طاولات سفرة تبدأ من',
-    cta_text: 'استكشف طاولات السفرة',
-    link: '/categories/dining-rooms',
-    display_order: 2,
-    is_active: true,
-  },
-];
-
 export default function AdminHeroSlidesPage() {
   const [slides, setSlides] = useState<HeroSlideRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tableMissing, setTableMissing] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   // Modal State
@@ -134,24 +70,14 @@ export default function AdminHeroSlidesPage() {
         .order('display_order', { ascending: true });
 
       if (error) {
-        if (error.code === 'PGRST205' || error.message.includes('not find the table')) {
-          setTableMissing(true);
-          setSlides(FALLBACK_DEFAULT_SLIDES);
-        } else {
-          console.error('Error fetching hero_slides:', error);
-          setSlides(FALLBACK_DEFAULT_SLIDES);
-        }
-      } else if (data && data.length > 0) {
-        setTableMissing(false);
-        setSlides(data as HeroSlideRecord[]);
-      } else {
-        // Table exists but is empty
-        setTableMissing(false);
+        console.error('Error fetching hero_slides:', error);
         setSlides([]);
+      } else {
+        setSlides((data as HeroSlideRecord[]) || []);
       }
     } catch (err) {
       console.error('Fetch error:', err);
-      setSlides(FALLBACK_DEFAULT_SLIDES);
+      setSlides([]);
     } finally {
       setLoading(false);
     }
@@ -313,14 +239,6 @@ export default function AdminHeroSlidesPage() {
   };
 
   const handleToggleActive = async (slide: HeroSlideRecord) => {
-    if (slide.id.startsWith('default-')) {
-      setStatusMessage({
-        text: 'هذه شريحة تجريبية افتراضية، يرجى تشغيل سكربت الترحيل في Supabase لتعديلها.',
-        type: 'error',
-      });
-      return;
-    }
-
     try {
       const supabase = createClient();
       const { error } = await supabase
@@ -345,14 +263,6 @@ export default function AdminHeroSlidesPage() {
   };
 
   const handleDeleteSlide = async (slide: HeroSlideRecord) => {
-    if (slide.id.startsWith('default-')) {
-      setStatusMessage({
-        text: 'هذه شريحة تجريبية افتراضية، يرجى تشغيل سكربت الترحيل في Supabase لحفظ وتعديل البنرات الحقيقية.',
-        type: 'error',
-      });
-      return;
-    }
-
     if (!confirm(`هل أنت متأكد من حذف بنر "${slide.title}"؟`)) return;
 
     try {
@@ -385,23 +295,14 @@ export default function AdminHeroSlidesPage() {
     try {
       const supabase = createClient();
       for (const item of updated) {
-        if (!item.id.startsWith('default-')) {
-          await supabase
-            .from('hero_slides')
-            .update({ display_order: item.display_order })
-            .eq('id', item.id);
-        }
+        await supabase
+          .from('hero_slides')
+          .update({ display_order: item.display_order })
+          .eq('id', item.id);
       }
     } catch (err) {
       console.warn('Reorder sync error:', err);
     }
-  };
-
-  const copySqlToClipboard = () => {
-    const sqlText = `-- انسخ هذا الكود والصقه في Supabase SQL Editor:
--- (موجود بالكامل في الملف supabase/migrations/20260922_hero_slides.sql)`;
-    navigator.clipboard.writeText(sqlText);
-    setStatusMessage({ text: 'تم نسخ مسار ملف الترحيل! يمكنك تشغيله في Supabase.', type: 'success' });
   };
 
   return (
@@ -470,35 +371,6 @@ export default function AdminHeroSlidesPage() {
             className="text-stone-400 hover:text-stone-700 p-1"
           >
             <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
-
-      {/* Migration Notice Banner if table is not yet migrated */}
-      {tableMissing && (
-        <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <Sparkles className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
-            <div className="space-y-1">
-              <h4 className="text-sm font-bold text-amber-900">
-                جدول البنرات (hero_slides) جاهز للتشغيل في Supabase
-              </h4>
-              <p className="text-xs text-amber-700 leading-relaxed">
-                تم تجهيز كود الترحيل في الملف{' '}
-                <code className="bg-amber-100/80 px-1.5 py-0.5 rounded font-mono text-[11px]">
-                  supabase/migrations/20260922_hero_slides.sql
-                </code>
-                . يتم الآن عرض الشرائح التجريبية الافتراضية حتى تقوم بتنفيذ السكربت.
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={copySqlToClipboard}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shrink-0 transition"
-          >
-            <Copy className="w-3.5 h-3.5" />
-            <span>نسخ التوجيه</span>
           </button>
         </div>
       )}
