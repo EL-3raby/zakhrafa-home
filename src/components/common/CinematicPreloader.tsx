@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation';
 
 export const CinematicPreloader: React.FC = () => {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
-  const [loaderKind, setLoaderKind] = useState<'intro' | 'page'>('intro');
+  const isHome = pathname === '/' || pathname === '';
+  const [isVisible, setIsVisible] = useState(isHome);
+  const [loaderKind, setLoaderKind] = useState<'intro' | 'page'>(isHome ? 'intro' : 'page');
   const [progress, setProgress] = useState(0);
   const [lastPathname, setLastPathname] = useState(pathname);
 
@@ -17,6 +18,7 @@ export const CinematicPreloader: React.FC = () => {
       const forceIntro = urlParams.get('intro') === 'true';
       const hasSeen = sessionStorage.getItem('zakhrafa_intro_completed');
       const shouldShowIntro = forceIntro || (!hasSeen && pathname === '/');
+
       setLoaderKind(shouldShowIntro ? 'intro' : 'page');
       setIsVisible(shouldShowIntro);
     } catch {
@@ -40,17 +42,17 @@ export const CinematicPreloader: React.FC = () => {
 
     document.body.style.overflow = 'hidden';
 
-    const duration = loaderKind === 'intro' ? 3800 : 1200;
+    const duration = loaderKind === 'intro' ? 2400 : 1000;
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        const increment = prev < 60 ? 2 : prev < 90 ? 1.5 : 1;
+        const increment = prev < 50 ? 2.5 : prev < 85 ? 2 : 1.5;
         return Math.min(Math.round(prev + increment), 100);
       });
-    }, 45);
+    }, 30);
 
     const timer = setTimeout(() => {
       if (loaderKind === 'intro') {
@@ -177,66 +179,39 @@ export const CinematicPreloader: React.FC = () => {
           exit={{
             y: '-100%',
             transition: {
-              duration: 1.0,
+              duration: 0.9,
               ease: [0.77, 0, 0.175, 1],
             },
           }}
           className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#07262A] text-white overflow-hidden select-none"
-          style={{ perspective: 1200 }}
         >
+          {/* Ambient Lighting & Glows */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <motion.div
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: [0.8, 1.25, 1], opacity: [0.2, 0.45, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-[#E17F3F]/25 blur-[130px]"
-            />
-
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-[#E17F3F]/25 blur-[130px]" />
             <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#12555C]/40 blur-[100px]" />
             <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#E17F3F]/15 blur-[100px]" />
-
             <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:28px_28px] opacity-60" />
           </div>
 
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.4 }}
+          {/* Skip Button */}
+          <button
             onClick={handleComplete}
             type="button"
-            className="absolute top-6 left-6 z-50 text-xs font-semibold text-stone-400 hover:text-white px-3 py-1.5 rounded-full border border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 cursor-pointer"
+            className="absolute top-6 left-6 z-50 text-xs font-semibold text-stone-300 hover:text-white px-3.5 py-1.5 rounded-full border border-white/20 hover:border-white/40 bg-white/10 hover:bg-white/15 backdrop-blur-sm transition-all duration-200 cursor-pointer"
           >
             تخطي
-          </motion.button>
+          </button>
 
+          {/* Central Brand Showcase */}
           <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-            <motion.div
-              initial={{
-                scale: 0.35,
-                rotateY: -70,
-                rotateX: 20,
-                opacity: 0,
-                filter: 'blur(12px)',
-              }}
-              animate={{
-                scale: 1,
-                rotateY: 0,
-                rotateX: 0,
-                opacity: 1,
-                filter: 'blur(0px)',
-              }}
-              transition={{
-                duration: 1.4,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="relative group mb-7 cursor-default"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
+            {/* Logo with Light Sweep */}
+            <div className="relative group mb-6 cursor-default">
+              {/* Light Sweep Sheen */}
               <motion.div
                 initial={{ x: '-160%', opacity: 0 }}
-                animate={{ x: '190%', opacity: [0, 0.85, 0] }}
-                transition={{ duration: 1.6, delay: 0.7, ease: 'easeInOut' }}
-                className="absolute inset-0 z-20 w-full h-full pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg]"
+                animate={{ x: '190%', opacity: [0, 0.9, 0] }}
+                transition={{ duration: 1.3, delay: 0.2, ease: 'easeInOut' }}
+                className="absolute inset-0 z-20 w-full h-full pointer-events-none bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-25deg]"
               />
 
               <div className="absolute -inset-2 rounded-2xl bg-[#E17F3F]/30 blur-lg -z-10" />
@@ -271,69 +246,40 @@ export const CinematicPreloader: React.FC = () => {
                   TM
                 </text>
               </svg>
-            </motion.div>
+            </div>
 
+            {/* Typography */}
             <div className="flex flex-col items-center">
-              <motion.h1
-                initial={{
-                  letterSpacing: '0.45em',
-                  opacity: 0,
-                  filter: 'blur(14px)',
-                  y: 14,
-                }}
-                animate={{
-                  letterSpacing: '0.22em',
-                  opacity: 1,
-                  filter: 'blur(0px)',
-                  y: 0,
-                }}
-                transition={{
-                  duration: 1.2,
-                  delay: 1.1,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
+              <h1
                 className="font-black text-2xl sm:text-3xl tracking-[0.22em] text-[#E17F3F] pl-[0.22em] text-center"
                 style={{ fontFamily: 'var(--font-alexandria), sans-serif' }}
               >
                 ZAKHRAFA
-              </motion.h1>
+              </h1>
 
-              <motion.div
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: 140, opacity: 1 }}
-                transition={{ duration: 0.9, delay: 1.6, ease: 'easeOut' }}
-                className="h-[1.5px] bg-gradient-to-r from-transparent via-[#E17F3F] to-transparent my-3"
-              />
+              <div className="w-[140px] h-[1.5px] bg-gradient-to-r from-transparent via-[#E17F3F] to-transparent my-3" />
 
-              <motion.p
-                initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.9, delay: 1.9, ease: 'easeOut' }}
+              <p
                 className="text-stone-300 text-xs sm:text-sm font-medium tracking-wide"
                 style={{ fontFamily: 'var(--font-alexandria), sans-serif' }}
               >
                 ديكورات مبتكرة • أثاث عصري فاخر
-              </motion.p>
+              </p>
             </div>
           </div>
 
+          {/* Progress Bar & Percentage */}
           <div className="absolute bottom-12 w-48 sm:w-60 flex flex-col items-center gap-2">
-            <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden relative">
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#E17F3F] to-[#f4aa73]"
+            <div className="w-full h-[2.5px] bg-white/10 rounded-full overflow-hidden relative">
+              <div
+                className="h-full bg-gradient-to-r from-[#E17F3F] to-[#f4aa73] transition-all duration-75 ease-out"
                 style={{ width: `${progress}%` }}
-                transition={{ ease: 'linear' }}
               />
             </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-[10px] font-mono tracking-widest text-stone-400"
-            >
+            <div className="text-[11px] font-mono tracking-widest text-stone-400">
               {progress}%
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       )}
