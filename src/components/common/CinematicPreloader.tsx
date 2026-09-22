@@ -1,27 +1,43 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 export const CinematicPreloader: React.FC = () => {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState<boolean>(() => {
-    if (pathname !== '/' && pathname !== '') return false;
-
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const forceIntro = urlParams.get('intro') === 'true';
-      const hasSeen = sessionStorage.getItem('zakhrafa_intro_completed');
-      return forceIntro || (!hasSeen && pathname === '/');
-    } catch {
-      return false;
-    }
-  });
+  const [isMounted, setIsMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!isVisible) return;
+    const timeout = window.setTimeout(() => {
+      setIsMounted(true);
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const timeout = window.setTimeout(() => {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const forceIntro = urlParams.get('intro') === 'true';
+        const hasSeen = sessionStorage.getItem('zakhrafa_intro_completed');
+        const shouldShowIntro = forceIntro || (!hasSeen && pathname === '/');
+        setIsVisible(shouldShowIntro);
+      } catch {
+        setIsVisible(false);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, [isMounted, pathname]);
+
+  useEffect(() => {
+    if (!isMounted || !isVisible) return;
 
     document.body.style.overflow = 'hidden';
 
@@ -52,7 +68,7 @@ export const CinematicPreloader: React.FC = () => {
       clearTimeout(timer);
       document.body.style.overflow = '';
     };
-  }, [isVisible]);
+  }, [isMounted, isVisible]);
 
   const handleComplete = () => {
     try {
@@ -64,7 +80,7 @@ export const CinematicPreloader: React.FC = () => {
     setIsVisible(false);
   };
 
-  if (!isVisible) return null;
+  if (!isMounted || !isVisible) return null;
 
   return (
     <AnimatePresence>
