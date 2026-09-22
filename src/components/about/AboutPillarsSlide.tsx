@@ -52,9 +52,9 @@ export const AboutPillarsSlide: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[125vh] z-40"
+      className="relative w-full min-h-screen sm:h-[125vh] z-40"
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center bg-white text-[#0B3D42] py-10 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="relative sm:sticky sm:top-0 min-h-screen w-full flex flex-col justify-center items-center bg-white text-[#0B3D42] py-16 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-visible sm:overflow-hidden">
         {/* Subtle Architectural Blueprint Grid */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0b3d4208_1px,transparent_1px),linear-gradient(to_bottom,#0b3d4208_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none" />
 

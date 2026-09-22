@@ -27,10 +27,10 @@ export const AboutHero: React.FC<AboutHeroProps> = ({ whatsappNumber }) => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[125vh] z-10"
+      className="relative w-full min-h-screen sm:h-[125vh] z-10"
     >
       {/* Pinned Viewport Stage */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#FAF8F5] px-4 sm:px-6 lg:px-8 py-6">
+      <div className="relative sm:sticky sm:top-0 min-h-screen w-full flex flex-col justify-center items-center overflow-visible sm:overflow-hidden bg-[#FAF8F5] px-4 sm:px-6 lg:px-8 py-16 sm:py-6">
         {/* Zero-lag GPU Radial Gradient Glows (No blur filter penalty) */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(225,127,63,0.12),transparent_55%),radial-gradient(circle_at_bottom_left,rgba(11,61,66,0.08),transparent_60%)] pointer-events-none" />
 
@@ -59,7 +59,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({ whatsappNumber }) => {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0B3D42]/5 border border-[#0B3D42]/15 text-[#0B3D42] text-xs font-bold shadow-2xs mb-6"
+              className="inline-flex max-w-full flex-wrap items-center justify-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0B3D42]/5 border border-[#0B3D42]/15 text-[#0B3D42] text-xs font-bold shadow-2xs mb-6"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#E17F3F]" />
               <span>دار تصميم للأثاث والديكور المعماري</span>
@@ -100,7 +100,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({ whatsappNumber }) => {
             >
               <Link
                 href="/categories"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#0B3D42] hover:bg-[#12555C] text-white text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all duration-200 group active:scale-98"
+                className="inline-flex w-full sm:w-auto justify-center items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#0B3D42] hover:bg-[#12555C] text-white text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all duration-200 group active:scale-98"
               >
                 <span>استكشف كتالوج المجموعات</span>
                 <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -112,7 +112,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({ whatsappNumber }) => {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full border border-[#0B3D42]/20 hover:border-[#0B3D42]/40 bg-white/90 hover:bg-white text-[#0B3D42] text-xs sm:text-sm font-bold transition-all duration-200 shadow-2xs active:scale-98"
+                className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-5 py-3.5 rounded-full border border-[#0B3D42]/20 hover:border-[#0B3D42]/40 bg-white/90 hover:bg-white text-[#0B3D42] text-xs sm:text-sm font-bold transition-all duration-200 shadow-2xs active:scale-98"
               >
                 <HeartHandshake className="w-4 h-4 text-[#E17F3F]" />
                 <span>تحدث مع مهندس التصميم</span>
@@ -124,7 +124,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({ whatsappNumber }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="pt-4 flex flex-wrap items-center justify-center sm:justify-start gap-5 text-xs font-bold text-[#0B3D42]/80 border-t border-stone-200/80"
+              className="pt-4 flex flex-wrap items-center justify-center sm:justify-start gap-x-5 gap-y-3 text-xs font-bold text-[#0B3D42]/80 border-t border-stone-200/80"
             >
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#E17F3F]" />
@@ -188,26 +188,26 @@ export const AboutHero: React.FC<AboutHeroProps> = ({ whatsappNumber }) => {
 
                 {/* Three Architectural Specifications Badges with generous spacing */}
                 <div className="space-y-3 pt-3 border-t border-stone-200/70 text-xs">
-                  <div className="flex items-center justify-between py-3 px-3.5 rounded-xl bg-stone-50/80 border border-stone-200/60">
-                    <div className="flex items-center gap-2.5 font-bold text-[#0B3D42]">
+                  <div className="flex items-start justify-between gap-3 py-3 px-3.5 rounded-xl bg-stone-50/80 border border-stone-200/60">
+                    <div className="flex min-w-0 items-start gap-2.5 font-bold text-[#0B3D42]">
                       <WoodGrainJoineryIcon className="w-4 h-4 text-[#E17F3F]" />
-                      <span>هياكل خشب زان أحمر مصمت</span>
+                      <span className="min-w-0">هياكل خشب زان أحمر مصمت</span>
                     </div>
                     <span className="text-[11px] font-bold text-stone-400 font-mono">100% SOLID</span>
                   </div>
 
-                  <div className="flex items-center justify-between py-3 px-3.5 rounded-xl bg-stone-50/80 border border-stone-200/60">
-                    <div className="flex items-center gap-2.5 font-bold text-[#0B3D42]">
+                  <div className="flex items-start justify-between gap-3 py-3 px-3.5 rounded-xl bg-stone-50/80 border border-stone-200/60">
+                    <div className="flex min-w-0 items-start gap-2.5 font-bold text-[#0B3D42]">
                       <WovenFabricIcon className="w-4 h-4 text-[#0B3D42]" />
-                      <span>أقمشة إيطالية معالجة ضد البقع</span>
+                      <span className="min-w-0">أقمشة إيطالية معالجة ضد البقع</span>
                     </div>
                     <span className="text-[11px] font-bold text-stone-400 font-mono">STAIN-FREE</span>
                   </div>
 
-                  <div className="flex items-center justify-between py-3 px-3.5 rounded-xl bg-stone-50/80 border border-stone-200/60">
-                    <div className="flex items-center gap-2.5 font-bold text-[#0B3D42]">
+                  <div className="flex items-start justify-between gap-3 py-3 px-3.5 rounded-xl bg-stone-50/80 border border-stone-200/60">
+                    <div className="flex min-w-0 items-start gap-2.5 font-bold text-[#0B3D42]">
                       <ArchitecturalDraftingIcon className="w-4 h-4 text-emerald-600" />
-                      <span>تفصيل بالمقاس والمليمتر</span>
+                      <span className="min-w-0">تفصيل بالمقاس والمليمتر</span>
                     </div>
                     <span className="text-[11px] font-bold text-emerald-600 font-mono">CUSTOM FIT</span>
                   </div>

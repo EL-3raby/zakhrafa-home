@@ -24,9 +24,9 @@ export const AboutCareSlide: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[125vh] z-50"
+      className="relative w-full min-h-screen sm:h-[125vh] z-50"
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center bg-[#F6F2ED] text-[#0B3D42] py-10 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="relative sm:sticky sm:top-0 min-h-screen w-full flex flex-col justify-center items-center bg-[#F6F2ED] text-[#0B3D42] py-16 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-visible sm:overflow-hidden">
         {/* Chapter Marker */}
         <div className="absolute top-4 right-6 sm:top-6 sm:right-10 flex items-center gap-2 text-stone-500 text-xs font-mono">
           <span className="w-2 h-2 rounded-full bg-[#E17F3F]" />

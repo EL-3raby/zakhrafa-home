@@ -51,9 +51,9 @@ export const AboutMetricsSlide: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[125vh] z-30"
+      className="relative w-full min-h-screen sm:h-[125vh] z-30"
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center bg-[#07262A] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="relative sm:sticky sm:top-0 min-h-screen w-full flex flex-col justify-center items-center bg-[#07262A] text-white py-16 sm:py-14 px-4 sm:px-6 lg:px-8 overflow-visible sm:overflow-hidden">
         {/* Zero-Lag Ambient Radial Glows (No CSS blur penalty) */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,127,63,0.15),transparent_65%),radial-gradient(circle_at_top_right,rgba(11,61,66,0.3),transparent_55%)] pointer-events-none" />
 

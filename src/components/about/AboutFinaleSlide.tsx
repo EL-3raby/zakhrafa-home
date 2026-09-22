@@ -97,7 +97,7 @@ export const AboutFinaleSlide: React.FC<AboutFinaleSlideProps> = ({ whatsappNumb
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold border border-white/20 transition-all duration-200 active:scale-98 backdrop-blur-xs"
+            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-6 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold border border-white/20 transition-all duration-200 active:scale-98 backdrop-blur-xs"
           >
             <MessageCircle className="w-4 h-4 text-[#E17F3F]" />
             <span>تواصل مباشرة عبر واتساب</span>
