@@ -386,8 +386,35 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ initialProducts }) => 
                 onItemsPerPageChange={(limit) => setItemsPerPage(limit)}
               />
             </div>
+          ) : initialProducts.length === 0 ? (
+            /* Database Empty / Connection Fallback State */
+            <div className="bg-white rounded-2xl border border-gray-100 p-12 sm:p-16 text-center space-y-4 shadow-xs">
+              <div className="w-16 h-16 rounded-full bg-stone-100 text-[#0B3D42] mx-auto flex items-center justify-center shadow-inner">
+                <PackageOpen className="w-8 h-8 stroke-[1.5]" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-black text-[#0B3D42]">
+                  لا توجد منتجات متاحة حاليًا
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                  يتم حالياً تحديث الكتالوج ورفع أحدث المجموعات والتصاميم الفاخرة. يمكنك دائمًا طلب تصميم أو تفصيل خاص عبر التواصل المباشر مع ورش ومصانع زخرفة.
+                </p>
+              </div>
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                <a
+                  href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                    'مرحباً زخرفة، أود الاستفسار عن تفصيل قطع أثاث مخصصة'
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#0B3D42] hover:bg-[#07262A] text-white px-6 py-3 rounded-xl text-xs sm:text-sm font-bold shadow-xs transition active:scale-95"
+                >
+                  <span>طلب تفصيل خاص عبر واتساب</span>
+                </a>
+              </div>
+            </div>
           ) : (
-            /* Empty State */
+            /* Filter Results Empty State */
             <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center space-y-4 shadow-xs">
               <div className="w-14 h-14 rounded-full bg-slate-100 text-gray-400 mx-auto flex items-center justify-center">
                 <PackageOpen className="w-7 h-7 stroke-[1.5]" />

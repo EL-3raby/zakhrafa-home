@@ -63,7 +63,37 @@ const cardVariants: Variants = {
   },
 };
 
-export const CategoryGrid: React.FC = () => {
+const isDev = process.env.NODE_ENV === 'development';
+
+interface CategoryGridProps {
+  categories?: Category[];
+}
+
+export const CategoryGrid: React.FC<CategoryGridProps> = ({ categories: passedCategories }) => {
+  const categoriesList = React.useMemo(() => {
+    const raw =
+      passedCategories && passedCategories.length > 0
+        ? passedCategories
+        : isDev
+        ? CATEGORIES
+        : [];
+    return raw.map((category) => ({
+      ...category,
+      icon: CATEGORY_ICONS[category.slug] || ArchitecturalSofaIcon,
+      badgeText:
+        category.slug === 'living-rooms'
+          ? 'الأكثر طلباً'
+          : category.slug === 'bedrooms'
+          ? 'تشكيلة جديدة'
+          : category.slug === 'custom-projects'
+          ? 'حسب الطلب'
+          : undefined,
+    }));
+  }, [passedCategories]);
+
+  if (categoriesList.length === 0) {
+    return null;
+  }
   return (
     <section id="categories" className="py-12 sm:py-16 lg:py-20 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,7 +119,7 @@ export const CategoryGrid: React.FC = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8"
         >
-          {CATEGORIES_DATA.map((cat) => {
+          {categoriesList.map((cat) => {
             const IconComponent = cat.icon;
             return (
               <motion.div key={cat.id} variants={cardVariants}>

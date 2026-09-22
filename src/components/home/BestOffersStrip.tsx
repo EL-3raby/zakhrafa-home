@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, ChevronLeft, ArrowLeft, Tag, Eye } from 'lucide-react';
@@ -100,7 +100,44 @@ const OFFERS_LIST: OfferProduct[] = [
   },
 ];
 
-export const BestOffersStrip: React.FC = () => {
+import { Product } from '@/types/product';
+
+const isDev = process.env.NODE_ENV === 'development';
+
+interface BestOffersStripProps {
+  offers?: (OfferProduct | Product)[];
+}
+
+export const BestOffersStrip: React.FC<BestOffersStripProps> = ({ offers: passedOffers }) => {
+  const offersList: OfferProduct[] = useMemo(() => {
+    if (passedOffers && passedOffers.length > 0) {
+      return passedOffers.map((p) => {
+        if ('originalPrice' in p && typeof p.originalPrice === 'number') {
+          return p as OfferProduct;
+        }
+        const product = p as Product;
+        const orig = product.price || 0;
+        const disc = product.discount_price || 0;
+        const pct = orig > disc && orig > 0 ? Math.round(((orig - disc) / orig) * 100) : 10;
+        return {
+          id: product.id,
+          slug: product.slug,
+          categorySlug: product.category?.slug || product.category_id,
+          categoryName: product.category?.name_ar || 'أثاث منزلي فاخر',
+          title: product.name_ar,
+          subtitle: product.material || 'تشطيب متقن وخامات عالية الجودة',
+          image:
+            product.images?.[0]?.url ||
+            'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=700&auto=format&fit=crop',
+          originalPrice: orig,
+          discountPrice: disc,
+          discountBadge: `-${pct}%`,
+        };
+      });
+    }
+    return isDev ? OFFERS_LIST : [];
+  }, [passedOffers]);
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -108,6 +145,10 @@ export const BestOffersStrip: React.FC = () => {
   const [scrollStart, setScrollStart] = useState(0);
   const [hasDragged, setHasDragged] = useState(false);
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
+
+  if (offersList.length === 0) {
+    return null;
+  }
 
   // Move to next offers (leftwards in RTL)
   const handleNext = useCallback(() => {
@@ -243,7 +284,7 @@ export const BestOffersStrip: React.FC = () => {
           }}
           className="flex items-stretch gap-4 sm:gap-6 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden no-scrollbar pb-3 select-none"
         >
-          {OFFERS_LIST.map((item) => {
+          {offersList.map((item) => {
             const formattedPrice = new Intl.NumberFormat('ar-EG').format(item.originalPrice);
             const formattedDiscountPrice = new Intl.NumberFormat('ar-EG').format(
               item.discountPrice

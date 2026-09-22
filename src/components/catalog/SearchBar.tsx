@@ -5,10 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, X, ArrowLeft, Package } from 'lucide-react';
-import { getAllProducts } from '@/data/mock-products';
+import { getAllProducts } from '@/lib/catalog';
 import { Product } from '@/types/product';
 
 interface SearchBarProps {
+  products?: Product[];
   value?: string;
   onChange?: (query: string) => void;
   onDebouncedChange?: (query: string) => void;
@@ -29,6 +30,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
+  products,
   value = '',
   onChange,
   onDebouncedChange,
@@ -41,7 +43,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState<Product[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const allProducts = useRef(getAllProducts());
+  const allProducts = useRef<Product[]>(products || []);
+
+  useEffect(() => {
+    if (products && products.length > 0) {
+      allProducts.current = products;
+    } else {
+      getAllProducts().then((data) => {
+        allProducts.current = data;
+      });
+    }
+  }, [products]);
 
   useEffect(() => {
     setQuery(value);
