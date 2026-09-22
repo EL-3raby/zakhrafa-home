@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
   const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com';
 
   const quickLinks = [
-    { name: 'عن زخرفة', href: '/' },
+    { name: 'عن زخرفة', href: '/about' },
     { name: 'كتالوج المنتجات', href: '/categories' },
     { name: 'العروض الحصرية', href: '/categories?offers=true' },
     { name: 'تواصل واستفسار', href: '/#contact' },

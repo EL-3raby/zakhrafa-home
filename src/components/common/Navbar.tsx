@@ -36,9 +36,9 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: 'الرئيسية', href: '/' },
+    { label: 'الكتالوج', href: '/categories' },
     { label: 'من نحن', href: '/about' },
-    { label: 'أقسام الكتالوج', href: '/categories' },
-    { label: 'تواصل معنا', href: '/#contact' },
+    { label: 'التواصل', href: '/#contact' },
   ];
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
@@ -165,7 +165,7 @@ export const Navbar: React.FC = () => {
               </Link>
               <Link href="/categories" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-stone-800 hover:bg-stone-50">
                 <span>
-                  <span className="block">كل المنتجات</span>
+                  <span className="block">الكتالوج</span>
                   <span className="mt-0.5 block text-[11px] font-normal text-stone-500">تصفح الكتالوج الكامل</span>
                 </span>
                 <ChevronLeft className="w-4 h-4 text-stone-400" />
@@ -186,7 +186,7 @@ export const Navbar: React.FC = () => {
               </Link>
               <Link href="/#contact" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3.5 py-3 text-sm font-bold text-stone-800 hover:bg-stone-50">
                 <span>
-                  <span className="block">الدعم</span>
+                  <span className="block">التواصل</span>
                   <span className="mt-0.5 block text-[11px] font-normal text-stone-500">تواصل معنا واستفسر</span>
                 </span>
                 <ChevronLeft className="w-4 h-4 text-stone-400" />
