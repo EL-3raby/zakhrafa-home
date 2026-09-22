@@ -14,7 +14,6 @@ import {
   ArchitectCompassIcon,
 } from '@/components/common/BrandIcons';
 import { Category } from '@/types/category';
-import { CATEGORIES } from '@/data/mock-products';
 
 interface CategoryItem extends Category {
   badgeText?: string;
@@ -29,18 +28,6 @@ const CATEGORY_ICONS: Record<string, CategoryItem['icon']> = {
   'decor-accessories': ArchitecturalDecorIcon,
   'custom-projects': ArchitectCompassIcon,
 };
-
-export const CATEGORIES_DATA: CategoryItem[] = CATEGORIES.map((category) => ({
-  ...category,
-  icon: CATEGORY_ICONS[category.slug],
-  badgeText: category.slug === 'living-rooms'
-    ? 'الأكثر طلباً'
-    : category.slug === 'bedrooms'
-      ? 'تشكيلة جديدة'
-      : category.slug === 'custom-projects'
-        ? 'حسب الطلب'
-        : undefined,
-}));
 
 const containerVariants: Variants = {
   hidden: {},
@@ -63,20 +50,13 @@ const cardVariants: Variants = {
   },
 };
 
-const isDev = process.env.NODE_ENV === 'development';
-
 interface CategoryGridProps {
   categories?: Category[];
 }
 
 export const CategoryGrid: React.FC<CategoryGridProps> = ({ categories: passedCategories }) => {
   const categoriesList = React.useMemo(() => {
-    const raw =
-      passedCategories && passedCategories.length > 0
-        ? passedCategories
-        : isDev
-        ? CATEGORIES
-        : [];
+    const raw = passedCategories || [];
     return raw.map((category) => ({
       ...category,
       icon: CATEGORY_ICONS[category.slug] || ArchitecturalSofaIcon,

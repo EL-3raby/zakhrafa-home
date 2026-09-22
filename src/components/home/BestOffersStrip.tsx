@@ -19,90 +19,7 @@ export interface OfferProduct {
   discountBadge: string;
 }
 
-const OFFERS_LIST: OfferProduct[] = [
-  {
-    id: 'offer-1',
-    slug: 'milano-luxury-sofa-set',
-    categorySlug: 'living-rooms',
-    categoryName: 'غرف المعيشة والصالونات',
-    title: 'طقم كنب ميلانو الفاخر (4 قطع)',
-    subtitle: 'خشب زان أحمر + قماش مخمل إيطالي',
-    image:
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=700&auto=format&fit=crop',
-    originalPrice: 14500,
-    discountPrice: 12900,
-    discountBadge: '-11%',
-  },
-  {
-    id: 'offer-2',
-    slug: 'aurora-king-bed-set',
-    categorySlug: 'bedrooms',
-    categoryName: 'غرف النوم الفاخرة',
-    title: 'غرفة نوم أورورا الفاخرة (كينج)',
-    subtitle: 'سرير كينج + زوج كمودينات + تسريحة رخام',
-    image:
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=700&auto=format&fit=crop',
-    originalPrice: 22000,
-    discountPrice: 19500,
-    discountBadge: '-12%',
-  },
-  {
-    id: 'offer-3',
-    slug: 'marbella-marble-dining-table',
-    categorySlug: 'dining-rooms',
-    categoryName: 'غرف السفرة وطاولات الطعام',
-    title: 'طاولة طعام ماربيلا رخام إيطالي (8 كراسي)',
-    subtitle: 'رخام طبيعي كلكتا وقواعد برونزية متينة',
-    image:
-      'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=700&auto=format&fit=crop',
-    originalPrice: 16500,
-    discountPrice: 14800,
-    discountBadge: '-10%',
-  },
-  {
-    id: 'offer-4',
-    slug: 'arcadia-corner-sofa',
-    categorySlug: 'living-rooms',
-    categoryName: 'غرف المعيشة والصالونات',
-    title: 'كنبة زاوية أركاديا المودرن',
-    subtitle: 'قماش بوكليه ناعم + أرجل ستانلس ذهبي',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=700&auto=format&fit=crop',
-    originalPrice: 9800,
-    discountPrice: 8400,
-    discountBadge: '-15%',
-  },
-  {
-    id: 'offer-5',
-    slug: 'serena-floating-bed',
-    categorySlug: 'bedrooms',
-    categoryName: 'غرف النوم الفاخرة',
-    title: 'سرير سيرينا المودرن بتصميم عائم',
-    subtitle: 'خشب جوز طبيعي + إضاءة LED مدمجة',
-    image:
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=700&auto=format&fit=crop',
-    originalPrice: 8900,
-    discountPrice: 7600,
-    discountBadge: '-15%',
-  },
-  {
-    id: 'offer-6',
-    slug: 'imperial-velvet-armchair',
-    categorySlug: 'living-rooms',
-    categoryName: 'غرف المعيشة والصالونات',
-    title: 'فوتيه إمبريال المخملي الفاخر',
-    subtitle: 'خشب زان + قماش مخمل زيتي وتفاصيل نحاسية',
-    image:
-      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=700&auto=format&fit=crop',
-    originalPrice: 3200,
-    discountPrice: 2850,
-    discountBadge: '-11%',
-  },
-];
-
 import { Product } from '@/types/product';
-
-const isDev = process.env.NODE_ENV === 'development';
 
 interface BestOffersStripProps {
   offers?: (OfferProduct | Product)[];
@@ -135,7 +52,7 @@ export const BestOffersStrip: React.FC<BestOffersStripProps> = ({ offers: passed
         };
       });
     }
-    return isDev ? OFFERS_LIST : [];
+    return [];
   }, [passedOffers]);
 
   const scrollRef = useRef<HTMLDivElement>(null);

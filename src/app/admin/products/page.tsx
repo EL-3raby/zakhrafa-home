@@ -22,6 +22,7 @@ import {
   CheckCircle,
   Clock,
   ExternalLink,
+  DownloadCloud,
 } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 20;
@@ -45,6 +46,7 @@ export default function AdminProductsPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<ProductRecord | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Fetch Categories for filter dropdown
   useEffect(() => {
@@ -156,6 +158,35 @@ export default function AdminProductsPage() {
     }
   };
 
+  const handleSyncDummyJson = async () => {
+    if (
+      !confirm(
+        'هل تريد جلب ومزامنة منتجات الأثاث الخمسة من DummyJSON وحفظها مباشرة في قاعدة بيانات Supabase؟'
+      )
+    )
+      return;
+
+    setIsSyncing(true);
+    try {
+      const res = await fetch('/api/sync-dummyjson', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        await fetchProducts();
+      } else {
+        alert(
+          (data.error || 'حدث خطأ أثناء المزامنة') +
+            (data.hint ? `\n\nتلميح: ${data.hint}` : '')
+        );
+      }
+    } catch (err: unknown) {
+      console.error('Error syncing:', err);
+      alert('تعذر الاتصال بالخادم لمزامنة المنتجات.');
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE) || 1;
 
   return (
@@ -175,13 +206,30 @@ export default function AdminProductsPage() {
           </p>
         </div>
 
-        <Link
-          href="/admin/products/new"
-          className="inline-flex items-center justify-center gap-2 bg-[#E17F3F] hover:bg-[#C96A2D] text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition active:scale-95 shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>إضافة منتج جديد</span>
-        </Link>
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <button
+            type="button"
+            onClick={handleSyncDummyJson}
+            disabled={isSyncing}
+            className="inline-flex items-center justify-center gap-2 bg-[#0B3D42] hover:bg-[#07262A] text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition active:scale-95 shrink-0 disabled:opacity-60 cursor-pointer"
+            title="جلب وحفظ منتجات الأثاث من DummyJSON API في Supabase"
+          >
+            {isSyncing ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <DownloadCloud className="w-4 h-4 text-[#E17F3F]" />
+            )}
+            <span>مزامنة منتجات DummyJSON</span>
+          </button>
+
+          <Link
+            href="/admin/products/new"
+            className="inline-flex items-center justify-center gap-2 bg-[#E17F3F] hover:bg-[#C96A2D] text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition active:scale-95 shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>إضافة منتج جديد</span>
+          </Link>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -261,13 +309,24 @@ export default function AdminProductsPage() {
             <p className="text-xs text-stone-500">
               جرب تغيير كلمات البحث أو الفلاتر، أو أضف منتجاً جديداً الآن.
             </p>
-            <Link
-              href="/admin/products/new"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E17F3F] hover:underline pt-2"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>إضافة منتج جديد</span>
-            </Link>
+            <div className="pt-2 flex items-center justify-center gap-4">
+              <Link
+                href="/admin/products/new"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E17F3F] hover:underline"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>إضافة منتج يدويًا</span>
+              </Link>
+              <button
+                type="button"
+                onClick={handleSyncDummyJson}
+                disabled={isSyncing}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0B3D42] hover:underline cursor-pointer"
+              >
+                <DownloadCloud className="w-3.5 h-3.5" />
+                <span>مزامنة منتجات DummyJSON الآن</span>
+              </button>
+            </div>
           </div>
         ) : (
           <div className="overflow-x-auto">

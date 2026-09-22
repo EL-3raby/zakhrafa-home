@@ -4,21 +4,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { CATEGORIES } from '@/data/mock-products';
-
 export interface CategoryStripItem {
   id: string;
   slug?: string;
   title: string;
   image_url: string;
 }
-
-export const CATEGORY_STRIP_ITEMS: CategoryStripItem[] = CATEGORIES.map((category) => ({
-  id: category.id,
-  slug: category.slug,
-  title: category.name_ar,
-  image_url: category.image_url,
-}));
 
 interface CategoryStoryStripProps {
   currentCategorySlug?: string;
@@ -31,7 +22,7 @@ export const CategoryStoryStrip: React.FC<CategoryStoryStripProps> = ({
   onSelectCategory,
   categories,
 }) => {
-  const items = categories && categories.length > 0 ? categories : CATEGORY_STRIP_ITEMS;
+  const items = categories || [];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);

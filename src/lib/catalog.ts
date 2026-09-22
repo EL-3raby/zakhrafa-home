@@ -2,12 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import { ProductRecord, CategoryRecord } from '@/types/database';
 import { Product } from '@/types/product';
 import { Category } from '@/types/category';
-import {
-  PRODUCTS as MOCK_PRODUCTS,
-  CATEGORIES as MOCK_CATEGORIES,
-} from '@/data/mock-products';
-
-const isDev = process.env.NODE_ENV === 'development';
 
 // Public Supabase client for ISR and Server Components without reading cookies
 export function getPublicSupabase() {
@@ -108,7 +102,7 @@ export function mapCategoryRecordToCategory(record: CategoryRecord): Category {
   };
 }
 
-// 1. Fetch all categories
+// 1. Fetch all categories strictly from Supabase
 export async function getAllCategories(): Promise<Category[]> {
   try {
     const supabase = getPublicSupabase();
@@ -126,11 +120,10 @@ export async function getAllCategories(): Promise<Category[]> {
     console.error('Error fetching categories from Supabase:', err);
   }
 
-  // Fallback only in development
-  return isDev ? MOCK_CATEGORIES : [];
+  return [];
 }
 
-// 2. Fetch category by slug
+// 2. Fetch category by slug strictly from Supabase
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   try {
     const supabase = getPublicSupabase();
@@ -149,15 +142,10 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
     console.error(`Error fetching category with slug "${slug}":`, err);
   }
 
-  if (isDev) {
-    const found = MOCK_CATEGORIES.find((c) => c.slug === slug);
-    return found || null;
-  }
-
   return null;
 }
 
-// 3. Fetch all products
+// 3. Fetch all products strictly from Supabase
 export async function getAllProducts(): Promise<Product[]> {
   try {
     const supabase = getPublicSupabase();
@@ -175,11 +163,10 @@ export async function getAllProducts(): Promise<Product[]> {
     console.error('Error fetching products from Supabase:', err);
   }
 
-  // Fallback only in development
-  return isDev ? MOCK_PRODUCTS : [];
+  return [];
 }
 
-// 4. Fetch product by slug
+// 4. Fetch product by slug strictly from Supabase
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
     const supabase = getPublicSupabase();
@@ -198,15 +185,10 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     console.error(`Error fetching product with slug "${slug}":`, err);
   }
 
-  if (isDev) {
-    const found = MOCK_PRODUCTS.find((p) => p.slug === slug);
-    return found || null;
-  }
-
   return null;
 }
 
-// 5. Fetch products by category slug
+// 5. Fetch products by category slug strictly from Supabase
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
   try {
     const supabase = getPublicSupabase();
@@ -226,7 +208,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      if (data) {
+      if (data && data.length > 0) {
         return data.map(mapProductRecordToProduct);
       }
     }
@@ -234,14 +216,10 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
     console.error(`Error fetching products for category "${categorySlug}":`, err);
   }
 
-  if (isDev) {
-    return MOCK_PRODUCTS.filter((p) => p.category_id === categorySlug);
-  }
-
   return [];
 }
 
-// 6. Fetch related products
+// 6. Fetch related products strictly from Supabase
 export async function getRelatedProducts(
   currentProductId: string,
   categorySlugOrId: string,
@@ -251,7 +229,6 @@ export async function getRelatedProducts(
     const supabase = getPublicSupabase();
 
     let categoryId = categorySlugOrId;
-    // Check if categorySlugOrId is a slug
     if (!categorySlugOrId.includes('-') || categorySlugOrId.length < 32) {
       const { data: cat } = await supabase
         .from('categories')
@@ -276,18 +253,10 @@ export async function getRelatedProducts(
     console.error('Error fetching related products:', err);
   }
 
-  if (isDev) {
-    return MOCK_PRODUCTS.filter(
-      (p) =>
-        (p.category_id === categorySlugOrId || p.category?.slug === categorySlugOrId) &&
-        p.id !== currentProductId
-    ).slice(0, limit);
-  }
-
   return [];
 }
 
-// 7. Fetch discounted offers
+// 7. Fetch discounted offers strictly from Supabase
 export async function getDiscountedOffers(limit: number = 6): Promise<Product[]> {
   try {
     const supabase = getPublicSupabase();
@@ -305,10 +274,6 @@ export async function getDiscountedOffers(limit: number = 6): Promise<Product[]>
     }
   } catch (err) {
     console.error('Error fetching discounted offers:', err);
-  }
-
-  if (isDev) {
-    return MOCK_PRODUCTS.filter((p) => p.discount_price && p.discount_price > 0).slice(0, limit);
   }
 
   return [];

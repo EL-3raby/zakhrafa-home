@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { ArrowLeft, Heart, ShoppingBag } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/common/BrandIcons';
 import { Product } from '@/types/product';
-import { CATEGORIES } from '@/data/mock-products';
 import { createWhatsAppProductMessage } from '@/lib/utils';
 import { useStore } from '@/components/common/StoreProvider';
 
@@ -29,9 +28,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     ? new Intl.NumberFormat('ar-EG').format(product.discount_price)
     : null;
 
-  const category = CATEGORIES.find(
-    (c) => c.id === product.category_id || c.slug === product.category_id
-  );
+  const category = product.category;
 
   return (
     <div className="group flex flex-col justify-between bg-white rounded-xl sm:rounded-2xl border border-gray-100/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-[#0B3D42]/20 transition-all duration-300">

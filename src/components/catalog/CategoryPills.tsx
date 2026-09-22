@@ -2,14 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { LayoutGrid } from 'lucide-react';
 import { Category } from '@/types/category';
-import { CATEGORIES as MOCK_CATEGORIES } from '@/data/mock-products';
 
 interface CategoryPillsProps {
   currentCategorySlug?: string;
   categories?: Category[];
 }
-
-const isDev = process.env.NODE_ENV === 'development';
 
 const SHORT_NAMES: Record<string, string> = {
   'living-rooms': 'غرف المعيشة',
@@ -24,12 +21,7 @@ export const CategoryPills: React.FC<CategoryPillsProps> = ({
   currentCategorySlug,
   categories: passedCategories,
 }) => {
-  const categoryList =
-    passedCategories && passedCategories.length > 0
-      ? passedCategories
-      : isDev
-      ? MOCK_CATEGORIES
-      : [];
+  const categoryList = passedCategories || [];
   return (
     <div
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}

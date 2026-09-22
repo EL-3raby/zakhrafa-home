@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ChevronRight, ChevronLeft, ArrowLeft, PackageOpen } from 'lucide-react';
 import { Category } from '@/types/category';
 import { Product } from '@/types/product';
-import { CATEGORIES as MOCK_CATEGORIES, PRODUCTS as MOCK_PRODUCTS } from '@/data/mock-products';
 
 interface ShopByDepartmentsProps {
   categories?: Category[];
@@ -16,20 +15,8 @@ export const ShopByDepartments: React.FC<ShopByDepartmentsProps> = ({
   categories: passedCategories,
   products: passedProducts,
 }) => {
-  const isDev = process.env.NODE_ENV === 'development';
-  const allCategories =
-    passedCategories && passedCategories.length > 0
-      ? passedCategories
-      : isDev
-      ? MOCK_CATEGORIES
-      : [];
-
-  const allProducts =
-    passedProducts && passedProducts.length > 0
-      ? passedProducts
-      : isDev
-      ? MOCK_PRODUCTS
-      : [];
+  const allCategories = passedCategories || [];
+  const allProducts = passedProducts || [];
 
   const initialTab = allCategories[0]?.slug || 'living-rooms';
   const [activeTabSlug, setActiveTabSlug] = useState<string>(initialTab);

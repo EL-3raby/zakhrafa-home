@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { CATEGORIES as MOCK_CATEGORIES } from '@/data/mock-products';
 import type { Category } from '@/types/category';
 import type { CategoryRecord } from '@/types/database';
 
@@ -20,7 +19,7 @@ function mapCategory(record: CategoryRecord): Category {
 }
 
 export function useCatalogCategories() {
-  const [categories, setCategories] = useState<Category[]>(MOCK_CATEGORIES);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
