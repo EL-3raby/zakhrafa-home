@@ -2,56 +2,90 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export const CinematicPreloader: React.FC = () => {
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
+  const [loaderKind, setLoaderKind] = useState<'intro' | 'page'>('intro');
   const [progress, setProgress] = useState(0);
+  const [lastPathname, setLastPathname] = useState(pathname);
 
   useEffect(() => {
-    // Show on first visit in the current session, or whenever ?intro=true is present
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const forceIntro = urlParams.get('intro') === 'true';
       const hasSeen = sessionStorage.getItem('zakhrafa_intro_completed');
-      if (forceIntro || !hasSeen) {
-        setIsVisible(true);
-      }
+      const shouldShowIntro = forceIntro || (!hasSeen && pathname === '/');
+      setLoaderKind(shouldShowIntro ? 'intro' : 'page');
+      setIsVisible(shouldShowIntro);
     } catch {
-      // Fallback if sessionStorage is disabled
+      setLoaderKind('page');
       setIsVisible(false);
     }
-  }, []);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (pathname !== lastPathname) {
+      setLastPathname(pathname);
+      if (loaderKind !== 'intro') {
+        setProgress(0);
+        setIsVisible(true);
+      }
+    }
+  }, [pathname, lastPathname, loaderKind]);
 
   useEffect(() => {
     if (!isVisible) return;
 
-    // Prevent body scrolling while preloader is active
     document.body.style.overflow = 'hidden';
 
-    // Simulate luxury progress smoothly over ~3.2 seconds
+    const duration = loaderKind === 'intro' ? 3800 : 1200;
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        // Steady, elegant progression
         const increment = prev < 60 ? 2 : prev < 90 ? 1.5 : 1;
         return Math.min(Math.round(prev + increment), 100);
       });
     }, 45);
 
-    // Auto dismiss after ~3.8 seconds
     const timer = setTimeout(() => {
-      handleComplete();
-    }, 3800);
+      if (loaderKind === 'intro') {
+        try {
+          sessionStorage.setItem('zakhrafa_intro_completed', 'true');
+        } catch {
+          // Ignore sessionStorage errors.
+        }
+      }
+      document.body.style.overflow = '';
+      setIsVisible(false);
+    }, duration);
 
     return () => {
       clearInterval(interval);
       clearTimeout(timer);
       document.body.style.overflow = '';
     };
-  }, [isVisible]);
+  }, [isVisible, loaderKind]);
+
+  useEffect(() => {
+    if (loaderKind !== 'page') return;
+
+    if (document.readyState === 'complete') {
+      const timer = window.setTimeout(() => setIsVisible(false), 450);
+      return () => window.clearTimeout(timer);
+    }
+
+    const onLoad = () => {
+      window.setTimeout(() => setIsVisible(false), 350);
+    };
+
+    window.addEventListener('load', onLoad, { once: true });
+    return () => window.removeEventListener('load', onLoad);
+  }, [loaderKind, pathname]);
 
   const handleComplete = () => {
     try {
@@ -63,6 +97,77 @@ export const CinematicPreloader: React.FC = () => {
     setIsVisible(false);
   };
 
+  if (loaderKind === 'page') {
+    return (
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            key="page-loader"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.25, ease: 'easeInOut' } }}
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#07262A]/30 backdrop-blur-md"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(225,127,63,0.18),_transparent_52%)]" />
+
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="relative z-10"
+            >
+              <svg
+                viewBox="0 0 800 800"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-20 w-20 text-[#F7F1EA] sm:h-24 sm:w-24"
+                style={{
+                  animation: 'loading-ui-swirling-spin 1.5s linear infinite',
+                  transformOrigin: 'center',
+                }}
+              >
+                <style>{`
+                  @keyframes loading-ui-swirling-spin {
+                    to {
+                      transform: rotate(360deg);
+                    }
+                  }
+                  @keyframes loading-ui-swirling-dash {
+                    0% {
+                      stroke-dasharray: 1, 800;
+                      stroke-dashoffset: 0;
+                    }
+                    50% {
+                      stroke-dasharray: 400, 400;
+                      stroke-dashoffset: -200px;
+                    }
+                    100% {
+                      stroke-dasharray: 800, 1;
+                      stroke-dashoffset: -800px;
+                    }
+                  }
+                  .loading-ui-swirling-circle {
+                    transform-origin: center;
+                    animation: loading-ui-swirling-dash 1.5s ease-in-out infinite alternate;
+                  }
+                `}</style>
+                <circle
+                  className="loading-ui-swirling-circle"
+                  cx="400"
+                  cy="400"
+                  r="200"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="50"
+                />
+              </svg>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  }
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -73,15 +178,13 @@ export const CinematicPreloader: React.FC = () => {
             y: '-100%',
             transition: {
               duration: 1.0,
-              ease: [0.77, 0, 0.175, 1], // Cinematic theatrical curtain ease
+              ease: [0.77, 0, 0.175, 1],
             },
           }}
           className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#07262A] text-white overflow-hidden select-none"
           style={{ perspective: 1200 }}
         >
-          {/* 1. Ambient Background Glows & Luxury Architectural Grid */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {/* Center Golden/Copper Radial Aura */}
             <motion.div
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: [0.8, 1.25, 1], opacity: [0.2, 0.45, 0.3] }}
@@ -89,15 +192,12 @@ export const CinematicPreloader: React.FC = () => {
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-[#E17F3F]/25 blur-[130px]"
             />
 
-            {/* Subtle Deep Teal Ambient Spotlight */}
             <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#12555C]/40 blur-[100px]" />
             <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#E17F3F]/15 blur-[100px]" />
 
-            {/* Geometric luxury lines watermark */}
             <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:28px_28px] opacity-60" />
           </div>
 
-          {/* 2. Skip Button (تخطي) */}
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -109,9 +209,7 @@ export const CinematicPreloader: React.FC = () => {
             تخطي
           </motion.button>
 
-          {/* 3. Main Center Stage (Emblem + Typography) */}
           <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-            {/* 3D Rotating & Assembling Z Emblem Cube */}
             <motion.div
               initial={{
                 scale: 0.35,
@@ -129,12 +227,11 @@ export const CinematicPreloader: React.FC = () => {
               }}
               transition={{
                 duration: 1.4,
-                ease: [0.16, 1, 0.3, 1], // Majestic smooth ease
+                ease: [0.16, 1, 0.3, 1],
               }}
               className="relative group mb-7 cursor-default"
               style={{ transformStyle: 'preserve-3d' }}
             >
-              {/* Shimmer Light Beam Effect passing over the Cube */}
               <motion.div
                 initial={{ x: '-160%', opacity: 0 }}
                 animate={{ x: '190%', opacity: [0, 0.85, 0] }}
@@ -142,10 +239,8 @@ export const CinematicPreloader: React.FC = () => {
                 className="absolute inset-0 z-20 w-full h-full pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg]"
               />
 
-              {/* Glowing Outer Shadow Halo */}
-              <div className="absolute -inset-2 rounded-2xl bg-[#E17F3F]/30 blur-lg -z-10 group-hover:bg-[#E17F3F]/50 transition-all" />
+              <div className="absolute -inset-2 rounded-2xl bg-[#E17F3F]/30 blur-lg -z-10" />
 
-              {/* The Official Vector Emblem SVG (Rendered High-End) */}
               <svg
                 viewBox="0 0 108 100"
                 fill="none"
@@ -153,25 +248,18 @@ export const CinematicPreloader: React.FC = () => {
                 className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]"
                 aria-label="زخرفة"
               >
-                {/* Stepped Islamic Architectural Exterior Frame */}
                 <path
                   d="M 8,0 H 92 V 8 H 100 V 92 H 92 V 100 H 8 V 92 H 0 V 8 H 8 Z"
                   fill="#E17F3F"
                 />
-
-                {/* Top Dynamic Ribbon of Z Cutout */}
                 <path
                   d="M 22,20.5 H 78.5 L 51.5,47.5 H 42 L 66.5,24.5 H 26 Z"
                   fill="#07262A"
                 />
-
-                {/* Bottom Dynamic Ribbon of Z Cutout */}
                 <path
                   d="M 78,79.5 H 21.5 L 48.5,52.5 H 58 L 33.5,75.5 H 74 Z"
                   fill="#07262A"
                 />
-
-                {/* TM Trademark Mark */}
                 <text
                   x="95"
                   y="10"
@@ -185,9 +273,7 @@ export const CinematicPreloader: React.FC = () => {
               </svg>
             </motion.div>
 
-            {/* Typography Reveal (Cinematic Tracking & Blur Effect) */}
             <div className="flex flex-col items-center">
-              {/* English Brand Name */}
               <motion.h1
                 initial={{
                   letterSpacing: '0.45em',
@@ -212,7 +298,6 @@ export const CinematicPreloader: React.FC = () => {
                 ZAKHRAFA
               </motion.h1>
 
-              {/* Expanding Golden Hairline Accent */}
               <motion.div
                 initial={{ width: 0, opacity: 0 }}
                 animate={{ width: 140, opacity: 1 }}
@@ -220,7 +305,6 @@ export const CinematicPreloader: React.FC = () => {
                 className="h-[1.5px] bg-gradient-to-r from-transparent via-[#E17F3F] to-transparent my-3"
               />
 
-              {/* Tagline Reveal (Arabic & Luxury Slogan) */}
               <motion.p
                 initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -233,7 +317,6 @@ export const CinematicPreloader: React.FC = () => {
             </div>
           </div>
 
-          {/* 4. Luxury Hairline Progress Indicator at the bottom */}
           <div className="absolute bottom-12 w-48 sm:w-60 flex flex-col items-center gap-2">
             <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden relative">
               <motion.div
