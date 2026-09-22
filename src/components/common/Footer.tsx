@@ -3,20 +3,12 @@ import Link from 'next/link';
 import { MapPin, ArrowUpLeft } from 'lucide-react';
 import { WhatsAppIcon, FacebookIcon, InstagramIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
+import { CATEGORIES } from '@/data/mock-products';
 
 export const Footer: React.FC = () => {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+201000000000';
   const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com';
   const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com';
-
-  const categories = [
-    { name: 'غرف المعيشة والصالونات', href: '/categories/living-rooms' },
-    { name: 'غرف السفرة وطاولات الطعام', href: '/categories/dining-rooms' },
-    { name: 'غرف النوم الفاخرة', href: '/categories/bedrooms' },
-    { name: 'طاولات القهوة والكونسول', href: '/categories/tables-consoles' },
-    { name: 'الديكورات واللمسات المبتكرة', href: '/categories/decor-accessories' },
-    { name: 'تفصيل خاص ومشاريع متكاملة', href: '/categories/custom-projects' },
-  ];
 
   const quickLinks = [
     { name: 'عن زخرفة', href: '/' },
@@ -85,14 +77,14 @@ export const Footer: React.FC = () => {
                 أقسام الكتالوج
               </h3>
               <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-xs text-slate-300">
-                {categories.map((cat) => (
-                  <li key={cat.name}>
+                {CATEGORIES.map((cat) => (
+                  <li key={cat.id}>
                     <Link
-                      href={cat.href}
+                      href={`/categories/${cat.slug}`}
                       className="hover:text-[#E17F3F] transition-colors inline-flex items-center gap-1 sm:gap-1.5 group py-0.5"
                     >
                       <ArrowUpLeft className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 group-hover:text-[#E17F3F] stroke-[1.5] transition-transform group-hover:-translate-x-0.5 shrink-0" />
-                      <span className="line-clamp-1">{cat.name}</span>
+                      <span className="line-clamp-1">{cat.name_ar}</span>
                     </Link>
                   </li>
                 ))}

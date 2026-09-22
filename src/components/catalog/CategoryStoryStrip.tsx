@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CATEGORIES } from '@/data/mock-products';
 
 export interface CategoryStripItem {
   id: string;
@@ -12,78 +13,12 @@ export interface CategoryStripItem {
   image_url: string;
 }
 
-export const CATEGORY_STRIP_ITEMS: CategoryStripItem[] = [
-  {
-    id: 'living-rooms',
-    slug: 'living-rooms',
-    title: 'صالونات ومعيشة',
-    image_url:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'dining-rooms',
-    slug: 'dining-rooms',
-    title: 'طاولات سفرة',
-    image_url:
-      'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'bedrooms',
-    slug: 'bedrooms',
-    title: 'غرف نوم',
-    image_url:
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'tables-consoles',
-    slug: 'tables-consoles',
-    title: 'طاولات وسط',
-    image_url:
-      'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'side-tables',
-    slug: 'tables-consoles',
-    title: 'ترابيزات جانبية',
-    image_url:
-      'https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'tv-units',
-    slug: 'custom-projects',
-    title: 'وحدات تليفزيون',
-    image_url:
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'consoles',
-    slug: 'tables-consoles',
-    title: 'كونسول ومداخل',
-    image_url:
-      'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'buffets',
-    slug: 'dining-rooms',
-    title: 'خزائن وبوفيه',
-    image_url:
-      'https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'decor-accessories',
-    slug: 'decor-accessories',
-    title: 'إضاءة وديكور',
-    image_url:
-      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 'custom-projects',
-    slug: 'custom-projects',
-    title: 'تفصيل خاص',
-    image_url:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=400&auto=format&fit=crop',
-  },
-];
+export const CATEGORY_STRIP_ITEMS: CategoryStripItem[] = CATEGORIES.map((category) => ({
+  id: category.id,
+  slug: category.slug,
+  title: category.name_ar,
+  image_url: category.image_url,
+}));
 
 interface CategoryStoryStripProps {
   currentCategorySlug?: string;

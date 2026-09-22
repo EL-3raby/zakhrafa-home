@@ -5,45 +5,6 @@ import Link from 'next/link';
 import { ChevronRight, ChevronLeft, ArrowLeft } from 'lucide-react';
 import { CATEGORIES, PRODUCTS } from '@/data/mock-products';
 
-interface DepartmentTab {
-  id: string;
-  slug: string;
-  label: string;
-}
-
-const DEPARTMENT_TABS: DepartmentTab[] = [
-  {
-    id: 'living-rooms',
-    slug: 'living-rooms',
-    label: 'أنتريهات وصالونات',
-  },
-  {
-    id: 'bedrooms',
-    slug: 'bedrooms',
-    label: 'غرف نوم ماستر',
-  },
-  {
-    id: 'dining-rooms',
-    slug: 'dining-rooms',
-    label: 'غرف سفرة وطعام',
-  },
-  {
-    id: 'tables-consoles',
-    slug: 'tables-consoles',
-    label: 'طاولات وكونسول',
-  },
-  {
-    id: 'decor-accessories',
-    slug: 'decor-accessories',
-    label: 'ديكورات وإضاءة',
-  },
-  {
-    id: 'custom-projects',
-    slug: 'custom-projects',
-    label: 'تفصيل خاص',
-  },
-];
-
 export const ShopByDepartments: React.FC = () => {
   const [activeTabSlug, setActiveTabSlug] = useState<string>('living-rooms');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -58,7 +19,7 @@ export const ShopByDepartments: React.FC = () => {
   }, [activeTabSlug]);
 
   const activeTabInfo = useMemo(() => {
-    return DEPARTMENT_TABS.find((t) => t.slug === activeTabSlug) || DEPARTMENT_TABS[0];
+    return CATEGORIES.find((category) => category.slug === activeTabSlug) || CATEGORIES[0];
   }, [activeTabSlug]);
 
   // Carousel scrolling handlers
@@ -88,20 +49,20 @@ export const ShopByDepartments: React.FC = () => {
 
           {/* Category Tabs / Pills directly under title from right to left */}
           <div className="flex items-center justify-start gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {DEPARTMENT_TABS.map((tab) => {
+            {CATEGORIES.map((tab) => {
               const isActive = activeTabSlug === tab.slug;
               return (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTabSlug(tab.slug)}
+                    onClick={() => setActiveTabSlug(tab.slug)}
                   className={`shrink-0 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer active:scale-95 whitespace-nowrap select-none ${
                     isActive
                       ? 'border-2 border-[#E17F3F] text-[#E17F3F] bg-[#E17F3F]/5 shadow-2xs'
                       : 'border border-stone-200 text-stone-600 hover:border-stone-400 hover:text-stone-900 bg-white'
                   }`}
                 >
-                  {tab.label}
+                    {tab.name_ar}
                 </button>
               );
             })}
@@ -196,7 +157,7 @@ export const ShopByDepartments: React.FC = () => {
             href={`/categories/${activeCategory?.slug || activeTabSlug}`}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-stone-200 hover:border-[#0B3D42] text-xs sm:text-sm font-bold text-stone-700 hover:text-[#0B3D42] bg-stone-50/60 hover:bg-white transition-all shadow-2xs active:scale-95 group"
           >
-            <span>استكشف كافة معروضات {activeTabInfo.label}</span>
+            <span>استكشف كافة معروضات {activeTabInfo.name_ar}</span>
             <ArrowLeft className="w-4 h-4 text-[#E17F3F] group-hover:-translate-x-1 transition-transform" />
           </Link>
         </div>

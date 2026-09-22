@@ -14,77 +14,33 @@ import {
   ArchitectCompassIcon,
 } from '@/components/common/BrandIcons';
 import { Category } from '@/types/category';
+import { CATEGORIES } from '@/data/mock-products';
 
 interface CategoryItem extends Category {
   badgeText?: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
-export const CATEGORIES_DATA: CategoryItem[] = [
-  {
-    id: 'living-rooms',
-    slug: 'living-rooms',
-    name_ar: 'غرف المعيشة والصالونات',
-    description_ar: 'أطقم كنب وكنبات زاوية مودرن وكلاسيك بأقمشة إيطالية وتراكيب خشب زان متينة.',
-    image_url:
-      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=900&auto=format&fit=crop',
-    item_count: 54,
-    badgeText: 'الأكثر طلباً',
-    icon: ArchitecturalSofaIcon,
-  },
-  {
-    id: 'dining-rooms',
-    slug: 'dining-rooms',
-    name_ar: 'غرف السفرة وطاولات الطعام',
-    description_ar: 'طاولات طعام من الرخام والخشب الطبيعي مع كراسي مريحة وأنيقة تليق باستقبال الضيوف.',
-    image_url:
-      'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=900&auto=format&fit=crop',
-    item_count: 38,
-    icon: ArchitecturalDiningIcon,
-  },
-  {
-    id: 'bedrooms',
-    slug: 'bedrooms',
-    name_ar: 'غرف النوم الفاخرة',
-    description_ar: 'تصاميم أسرّة عصرية مع خزائن وكمودينات بتشطيبات مميزة تمنحك أقصى درجات الراحة.',
-    image_url:
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=900&auto=format&fit=crop',
-    item_count: 42,
-    badgeText: 'تشكيلة جديدة',
-    icon: ArchitecturalBedIcon,
-  },
-  {
-    id: 'tables-consoles',
-    slug: 'tables-consoles',
-    name_ar: 'طاولات القهوة والكونسول',
-    description_ar: 'طاولات جانبية وكونسولات مدخل فاخرة بتفاصيل من الرخام، الخشب، والستانلس ستيل.',
-    image_url:
-      'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=900&auto=format&fit=crop',
-    item_count: 36,
-    icon: ArchitecturalCoffeeTableIcon,
-  },
-  {
-    id: 'decor-accessories',
-    slug: 'decor-accessories',
-    name_ar: 'الديكورات واللمسات المبتكرة',
-    description_ar: 'إكسسوارات جدارية، مرايا فخمة، وتحف فنية فريدة تكتمل بها أناقة كل مساحة في بيتك.',
-    image_url:
-      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=900&auto=format&fit=crop',
-    item_count: 30,
-    icon: ArchitecturalDecorIcon,
-  },
-  {
-    id: 'custom-projects',
-    slug: 'custom-projects',
-    name_ar: 'تفصيل خاص ومشاريع متكاملة',
-    description_ar: 'تصميم وتنفيذ أثاث حصري ومقاسات خاصة تحت إشراف مهندسي ديكور متخصصين.',
-    image_url:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop',
-    item_count: 25,
-    badgeText: 'حسب الطلب',
-    icon: ArchitectCompassIcon,
-  },
-];
+const CATEGORY_ICONS: Record<string, CategoryItem['icon']> = {
+  'living-rooms': ArchitecturalSofaIcon,
+  'dining-rooms': ArchitecturalDiningIcon,
+  bedrooms: ArchitecturalBedIcon,
+  'tables-consoles': ArchitecturalCoffeeTableIcon,
+  'decor-accessories': ArchitecturalDecorIcon,
+  'custom-projects': ArchitectCompassIcon,
+};
+
+export const CATEGORIES_DATA: CategoryItem[] = CATEGORIES.map((category) => ({
+  ...category,
+  icon: CATEGORY_ICONS[category.slug],
+  badgeText: category.slug === 'living-rooms'
+    ? 'الأكثر طلباً'
+    : category.slug === 'bedrooms'
+      ? 'تشكيلة جديدة'
+      : category.slug === 'custom-projects'
+        ? 'حسب الطلب'
+        : undefined,
+}));
 
 const containerVariants: Variants = {
   hidden: {},
