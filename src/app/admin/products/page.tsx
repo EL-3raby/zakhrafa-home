@@ -23,6 +23,7 @@ import {
   Clock,
   ExternalLink,
 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -248,9 +249,29 @@ export default function AdminProductsPage() {
       {/* Products Table */}
       <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
         {isLoading ? (
-          <div className="py-24 flex flex-col items-center justify-center gap-3 text-stone-400">
-            <Loader2 className="w-8 h-8 animate-spin text-[#E17F3F]" />
-            <span className="text-xs font-semibold">جاري تحميل المنتجات من Supabase...</span>
+          <div className="p-4 sm:p-6 space-y-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between p-3.5 rounded-xl bg-stone-50/70 border border-stone-100"
+              >
+                <div className="flex items-center gap-3.5">
+                  <Skeleton className="w-12 h-12 rounded-xl bg-stone-200 shrink-0" />
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-4 w-44 sm:w-60 rounded bg-stone-200" />
+                    <Skeleton className="h-3 w-28 rounded bg-stone-100" />
+                  </div>
+                </div>
+                <div className="hidden sm:flex items-center gap-6">
+                  <Skeleton className="h-5 w-20 rounded-full bg-stone-100" />
+                  <Skeleton className="h-5 w-24 rounded bg-stone-200" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-8 w-8 rounded-lg bg-stone-100" />
+                  <Skeleton className="h-8 w-8 rounded-lg bg-stone-100" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : products.length === 0 ? (
           <div className="py-16 text-center space-y-3">
